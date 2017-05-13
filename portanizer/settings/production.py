@@ -80,19 +80,19 @@ WSGI_APPLICATION = 'portanizer.wsgi.application'
 #     }
 # }
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'portanizer',
-        'USER': 'ded',
-        'PASSWORD': 'dedpassword',
-        'HOST': 'localhost',
-        'PORT': '3306',
-        'OPTIONS': {
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-        },
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'portanizer',
+#         'USER': 'ded',
+#         'PASSWORD': 'dedpassword',
+#         'HOST': 'localhost',
+#         'PORT': '3306',
+#         'OPTIONS': {
+#             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+#         },
+#     }
+# }
 
 db_from_env = dj_database_url.config()
 DATABASES['default'].update(db_from_env)
