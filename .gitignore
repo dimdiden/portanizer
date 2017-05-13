@@ -1,4 +1,4 @@
-/portanizer/portanizer/local.py
+/portanizer/settings/local.py
 venv
 *.pyc
 staticfiles
