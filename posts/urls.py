@@ -1,7 +1,7 @@
 from django.conf.urls import url
-from posts.views import IndexTemplateView
+from posts.views import PostListView
 
 
 urlpatterns = [
-    url(r'^$', IndexTemplateView.as_view(), name='index'),
+    url(r'^$', PostListView.as_view(), name='index'),
 ]

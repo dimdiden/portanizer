@@ -5,6 +5,9 @@
     <title>HELL YEA!</title>
 </head>
 <body>
-    First attempt
+        {% for object in object_list %}
+            <p>{{object.title}}</p>
+            <p>{{object.body}}</p>
+        {% endfor %}
 </body>
 </html>

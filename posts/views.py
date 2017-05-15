@@ -1,6 +1,8 @@
-from django.views.generic import TemplateView
+from django.views.generic import ListView
+from posts.models import Post
 
 
-class IndexTemplateView(TemplateView):
+class PostListView(ListView):
 
+    model = Post
     template_name = 'index.html'
