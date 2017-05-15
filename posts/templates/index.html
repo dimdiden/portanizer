@@ -5,12 +5,26 @@
     <title>HELL YEA!</title>
 </head>
 <body>
-        {% for object in object_list %}
-            <p>{{object.title}}</p>
-            <p>{{object.body}}</p>
-            {% for tag in object.tag.all %}
-                <p><a href="">{{tag}}</a></p>
-            {% endfor %}           
-        {% endfor %}
+    <div>
+        <a href="/">Home</a>
+    </div>
+    <div>
+    <form action ="" method = "get" novalidate> 
+        <div class="form-group">
+            {{ form.as_p }}
+            {{ form.name.errors }}
+        </div>
+        <button type="submit" class="btn btn-success">Search</button>
+    </form>
+    </div>
+    <div>
+    {% for post in posts %}
+        <p><b>{{post.title}}</b></p>
+        <p>{{post.body}}</p>
+        {% for tag in post.tag.all %}
+            <a href="">{{tag}}</a>
+        {% endfor %}           
+    {% endfor %}
+    </div>
 </body>
 </html>
