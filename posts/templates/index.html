@@ -8,6 +8,9 @@
         {% for object in object_list %}
             <p>{{object.title}}</p>
             <p>{{object.body}}</p>
+            {% for tag in object.tag.all %}
+                <p><a href="">{{tag}}</a></p>
+            {% endfor %}           
         {% endfor %}
 </body>
 </html>
