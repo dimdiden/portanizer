@@ -1,0 +1,19 @@
+<form action ="" method = "get" novalidate>
+    <button type="submit" class="btn btn-success">Search</button>
+    {% comment %}
+        <div class="form">
+            {{ form.as_table }}
+            {{ form.name.errors }}
+        </div>                    
+    {% endcomment %}
+    <div class="btn-group-vertical" data-toggle="buttons">        
+        {# http://stackoverflow.com/questions/15365028/twitter-bootstrap-button-group-control-radio-buttons-checkboxes #}
+        {% for checkbox in form.select_tag %}
+        {# https://docs.djangoproject.com/en/1.11/ref/forms/widgets/#radioselect #}
+            <label for="{{ checkbox.id_for_label }}" class="btn btn-primary">
+            {{ checkbox.choice_label }}
+            {{ checkbox.tag }}
+            </label>
+        {% endfor %}
+    </div>                    
+</form>
