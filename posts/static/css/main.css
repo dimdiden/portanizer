@@ -1,3 +1,15 @@
+.btn-primary {
+    box-shadow: none;
+}
+/*http://stackoverflow.com/questions/34536784/bootstrap-button-active-color-change*/
+.btn.btn-primary.active,
+.btn.btn-primary:active {
+  color: #fff;
+  background-color: #b1fc29;
+  border-color: #b1fc29;
+  outline: none;
+  box-shadow: none;
+}
 .row {
     margin-top:10px; 
 }
