@@ -4,9 +4,11 @@
         {% include "includes/top.html" %}
     </div>
     <div class="row">
-        {% include "includes/panel.html" %}
+        <div class="col-sm-2">
+            {% include "includes/panel.html" %}
+        </div>
+        <div class="col-sm-10">
+            {% include "includes/posts.html" %}
+        </div> 
     </div>
-    <div class="row">
-        {% include "includes/posts.html" %}
-    </div> 
 {% endblock content %}

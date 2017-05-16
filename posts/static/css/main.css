@@ -2,7 +2,6 @@
   border-radius: 0 !important;
 }*/
 .btn-primary {
-    box-shadow: none;
     background-color: transparent;
 }
 /*http://stackoverflow.com/questions/34536784/bootstrap-button-active-color-change*/
@@ -13,10 +12,9 @@
 .btn.btn-primary:hover {
   background-color: transparent;
 }
-.row {
+/*.row {
     margin-top:10px; 
-}
+}*/
 body {
-    height : 100%;
     background-color:#688887;
 }

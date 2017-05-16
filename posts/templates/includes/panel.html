@@ -1,4 +1,4 @@
-<form action ="" method = "get" novalidate>
+<form class="form-group" action ="" method = "get" novalidate>
     <button type="submit" class="btn btn-success">Search</button>
     {% comment %}
         <div class="form">
@@ -6,7 +6,7 @@
             {{ form.name.errors }}
         </div>                    
     {% endcomment %}
-    <div class="btn-group-vertical" data-toggle="buttons">        
+    <div class="btn-group-vertical" data-toggle="buttons">       
         {# http://stackoverflow.com/questions/15365028/twitter-bootstrap-button-group-control-radio-buttons-checkboxes #}
         {% for checkbox in form.select_tag %}
         {# https://docs.djangoproject.com/en/1.11/ref/forms/widgets/#radioselect #}
