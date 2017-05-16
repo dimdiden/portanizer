@@ -2,29 +2,56 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>HELL YEA!</title>
+    <title>Portanizer</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" type = "text/css"/>
+    <link rel="stylesheet" href="{% static 'css/main.css' %}" type = "text/css"/>
+    <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
 </head>
 <body>
-    <div>
-        <a href="/">Home</a>
-    </div>
-    <div>
-    <form action ="" method = "get" novalidate> 
-        <div class="form-group">
-            {{ form.as_p }}
-            {{ form.name.errors }}
-        </div>
-        <button type="submit" class="btn btn-success">Search</button>
-    </form>
-    </div>
-    <div>
-    {% for post in posts %}
-        <p><b>{{post.title}}</b></p>
-        <p>{{post.body}}</p>
-        {% for tag in post.tag.all %}
-            <a href="">{{tag}}</a>
-        {% endfor %}           
-    {% endfor %}
-    </div>
+    <div class="container">
+        <div class="row">
+            <div class="row">
+                <a href="/">Home</a>
+            </div>
+
+
+            <div class="row">
+                <form action ="" method = "get" novalidate> 
+                    <button type="submit" class="btn btn-success">Search</button>
+                    {% comment %}
+                        <div class="form">
+                            {{ form.as_table }}
+                            {{ form.name.errors }}
+                        </div>                    
+                    {% endcomment %}
+                    <div class="btn-group" data-toggle="buttons">
+                        {# http://stackoverflow.com/questions/15365028/twitter-bootstrap-button-group-control-radio-buttons-checkboxes #}
+                        {% for checkbox in form.select_tag %}
+                        {# https://docs.djangoproject.com/en/1.11/ref/forms/widgets/#radioselect #}
+                            <label for="{{ checkbox.id_for_label }}" class="btn btn-primary">
+                            {{ checkbox.choice_label }}
+                            {{ checkbox.tag }}
+                            </label>
+                        {% endfor %}
+                    </div>                    
+                </form>
+            </div>
+
+            <div class="row">
+                {% for post in posts %}
+                    <div class="well well-sm">                   
+                        <p><b>{{post.title}}</b></p>
+                        <p><code>{{post.body}}</code></p>
+                        {% for tag in post.tag.all %}
+                            <a href="">{{tag}}</a>
+                        {% endfor %}
+                    </div>                     
+                {% endfor %}
+            </div> 
+            
+        </div><!--first row-->
+    </div><!--container-->
 </body>
 </html>
