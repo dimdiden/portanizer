@@ -43,7 +43,9 @@
                 {% for post in posts %}
                     <div class="well well-sm">                   
                         <p><b>{{post.title}}</b></p>
-                        <p><code>{{post.body}}</code></p>
+                        {% autoescape on %}
+                        <pre>{{post.body}}</pre>
+                        {% endautoescape %}
                         {% for tag in post.tag.all %}
                             <a href="">{{tag}}</a>
                         {% endfor %}
