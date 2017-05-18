@@ -1,19 +1,38 @@
-<form class="form-group" action ="" method = "get" novalidate>
-    <button type="submit" class="btn btn-success">Search</button>
-    {% comment %}
-        <div class="form">
-            {{ form.as_table }}
-            {{ form.name.errors }}
-        </div>                    
-    {% endcomment %}
-    <div class="btn-group-vertical" data-toggle="buttons">       
+<form class="form-group" action ="" method="get" novalidate>
+    {# <button type="submit" class="btn btn-success">Search</button> #}
+    <div class="btn-group-vertical"><!--data-toggle="buttons"-->
+        <button type="submit" class="btn btn-success">Search</button>
         {# http://stackoverflow.com/questions/15365028/twitter-bootstrap-button-group-control-radio-buttons-checkboxes #}
+        <div class="btn-group-vertical" data-toggle="buttons">
         {% for checkbox in form.select_tag %}
-        {# https://docs.djangoproject.com/en/1.11/ref/forms/widgets/#radioselect #}
+            {# http://codepen.io/vlichtenberg/pen/GgoBdq #}
+            {# https://docs.djangoproject.com/en/1.11/ref/forms/widgets/#radioselect #}
+            {# https://codepen.io/j_holtslander/pen/XmpMEp toogleble sidebar#}
             <label for="{{ checkbox.id_for_label }}" class="btn btn-primary">
             {{ checkbox.choice_label }}
             {{ checkbox.tag }}
             </label>
         {% endfor %}
-    </div>                    
+        </div>
+    </div>  
+                   
 </form>
+
+{% comment %}
+<form class="form-group" action ="" method = "get" novalidate>
+    {# <button type="submit" class="btn btn-success">Search</button> #}
+    <div class="btn-group-vertical">
+        <button type="submit" class="btn btn-success">Search</button>
+
+        <div class="btn-group-vertical" data-toggle="buttons">
+            <label class="btn btn-primary">
+                <input type="checkbox" name="select_tag" value="2" id="id_select_tag_0" /> Mysqldnjaslkd
+            </label >
+            <label class="btn btn-primary">
+                <input type="checkbox" name="select_tag" value="3" id="id_select_tag_1" /> Disk health
+            </label>
+        </div>          
+    </div>
+</form>
+{% endcomment %}
+

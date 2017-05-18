@@ -1,5 +1,6 @@
 {% for post in posts %}
-    <div class="well well-sm">                   
+    <div class="well well-sm">
+        <p><b>{{post.title}}</b></p>                
         <pre>{{post.body}}</pre>
         {% for tag in post.tag.all %}
             <a href="">{{tag}}, </a>
