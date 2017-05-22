@@ -1,0 +1,41 @@
+{% extends "header.html" %}
+{% block content %}
+{% load widget_tweaks %}
+
+<div class="well well-sm">
+    <form class="form-group" action ="" method="post" novalidate>{% csrf_token %}
+        {{ form.title.errors }}
+        <label for="{{ form.title.id_for_label }}">Title: </label>
+        {% render_field form.title class="form-control" %}
+        {{ form.body.errors }}
+        <p></p>
+        <label for="{{ form.body.id_for_label }}">Body: </label>
+        {% render_field form.body class="form-control" %}
+        {{ form.tag.errors }}
+        <p></p>
+        <label for="{{ form.tag.id_for_label }}">Tag: </label>
+        {% render_field form.tag class="form-control" %}
+        <p></p>
+        <input type="submit" class="btn btn-success" value="Submit"/>
+    </form>
+
+    {% url 'createpost' as url_createpost %}
+    {% if request.path != url_createpost %}        
+        <form class="form-group" action="{% url 'deletepost' pk %}" method="get" novalidate>
+            <input type="submit" class="btn btn-danger" value="Delete"/>
+        </form>
+    {% endif %}
+
+    <form class="form-inline" action ="{% url 'createtag' %}" method="post" novalidate>{% csrf_token %}
+        <div class="form-group">
+        {{ form.title.errors }}
+        <label for="{{ formTag.name.id_for_label }}">New tag: </label>
+    {#         <label for="pwd">New Tag:</label> #}
+        {% render_field formTag.name class="form-control" %}
+            {# <input type="text" class="form-control" id="pwd"> #}
+          </div>
+          <button type="submit" class="btn btn-default">Create</button>
+    </form>    
+
+</div>
+{% endblock content %}

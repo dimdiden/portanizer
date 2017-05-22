@@ -1,7 +1,9 @@
 /** {
   border-radius: 0 !important;
 }*/
-.btn-primary {
+
+
+/*.btn-primary {
     background-color: transparent;
 }
 .btn-success {
@@ -11,6 +13,7 @@
 .btn.btn-success:hover {
   background-color: #2e6da4;
 }
+*/
 
 /*http://stackoverflow.com/questions/34536784/bootstrap-button-active-color-change*/
 /*.btn.btn-primary.focus,
@@ -18,9 +21,10 @@
   background-color: transparent;
 }*/
 
-.btn.btn-primary:hover {
+
+/*.btn.btn-primary:hover {
   background-color: transparent;
-}
+}*/
 
 
 /*.row {
@@ -28,4 +32,5 @@
 }*/
 body {
     background-color:#688887;
+    padding-top: 70px; /*for fixed nav bar*/
 }

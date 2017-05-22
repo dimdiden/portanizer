@@ -1,3 +1,4 @@
+{% comment %}
 <form class="form-group" action ="" method="get" novalidate>
     {# <button type="submit" class="btn btn-success">Search</button> #}
     <div class="btn-group-vertical"><!--data-toggle="buttons"-->
@@ -15,24 +16,31 @@
         {% endfor %}
         </div>
     </div>  
-                   
-</form>
-
-{% comment %}
-<form class="form-group" action ="" method = "get" novalidate>
-    {# <button type="submit" class="btn btn-success">Search</button> #}
-    <div class="btn-group-vertical">
-        <button type="submit" class="btn btn-success">Search</button>
-
-        <div class="btn-group-vertical" data-toggle="buttons">
-            <label class="btn btn-primary">
-                <input type="checkbox" name="select_tag" value="2" id="id_select_tag_0" /> Mysqldnjaslkd
-            </label >
-            <label class="btn btn-primary">
-                <input type="checkbox" name="select_tag" value="3" id="id_select_tag_1" /> Disk health
-            </label>
-        </div>          
-    </div>
 </form>
 {% endcomment %}
+
+
+{#!!!!! http://stackoverflow.com/questions/23103567/bootstrap-dropdown-checkbox-select               #}
+{# https://behigh.github.io/bootstrap_dropdowns_enhancement/#inputs-disable-label-replacement #}
+<form action="./" method="GET">
+    <div class="btn-group"><!--navbar-btn-->
+        <button class="btn btn-primary">SearchByTag</button>
+        <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" data-placeholder="false"> <span class="caret"></span></button>
+     
+        <ul class="dropdown-menu">
+        {% for checkbox in form.select_tag %}
+            <li>
+                {{ checkbox.tag }}
+                <label for="{{ checkbox.id_for_label }}">{{ checkbox.choice_label }}</label>
+            </li>
+        {% endfor %}
+            
+          {# <li> #}
+            {# <input type="checkbox" id="ex6_1" name="ex6" value="1"> #}
+            {# <label for="ex6_1">Option1</label> #}
+          {# </li> #}
+          
+        </ul>
+    </div>
+</form>
 
