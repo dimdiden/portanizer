@@ -1,9 +1,7 @@
-from django.shortcuts import render, redirect
-# from django.http import HttpResponseRedirect
-# from django.views.generic.edit import FormMixin
+from django.shortcuts import render
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from posts.models import Post, Tag
-from posts.forms import TagMultiplyForm, TagModelForm
+from posts.forms import TagMultiplyForm, TagModelForm, PostModelForm
 
 
 """
@@ -31,34 +29,83 @@ class PostListView(ListView):
         })
 
 
-class CreatePostView(CreateView):
+class CreatePostFormView(CreateView):
     model = Post
     fields = '__all__'
     template_name = 'post.html'
     success_url = '/'
 
     def get_context_data(self, **kwargs):
-        context = super(CreatePostView, self).get_context_data(**kwargs)
+        context = super(CreatePostFormView, self).get_context_data(**kwargs)
+        # context['form'] = PostModelForm()
         context['formNewTag'] = TagModelForm()
         context['formMultyTag'] = TagMultiplyForm()
         return context
 
+    def post(self, request, *args, **kwargs):
+        formPost = PostModelForm(request.POST)
+        formTag = TagModelForm(request.POST)
 
-class UpdatePostView(UpdateView):
+        """
+        Check if New tag form is valid or not.
+        Redisplay the entered Post data.
+        https://stackoverflow.com/questions/569468/django-multiple-models-in-one-template-using-forms
+        """
+        if formTag.is_valid():
+            formTag.save()
+            # return render_to_response(self.get_context_data(form=formPost))
+            return render(request, 'post.html', {
+                'formNewTag': TagModelForm(),
+                'formMultyTag': TagMultiplyForm(),
+                'form': formPost,
+            })
+        elif request.POST.get('name'):
+            return render(request, 'post.html', {
+                'formNewTag': formTag,
+                'formMultyTag': TagMultiplyForm(),
+                'form': formPost,
+            })
+
+        # Return the standard post method if the New tag is not specified 
+        return super(CreatePostFormView, self).post(self, request, *args, **kwargs)
+
+
+class UpdatePostFormView(UpdateView):
     model = Post
     fields = '__all__'
     template_name = 'post.html'
     success_url = '/'
 
-    """
-    To do: implement post method which save Tag or Post
-    """
-
     def get_context_data(self, **kwargs):
-        context = super(UpdatePostView, self).get_context_data(**kwargs)
+        context = super(UpdatePostFormView, self).get_context_data(**kwargs)
         context.update(self.kwargs)
+        # context['form'] = PostModelForm()
         context['formNewTag'] = TagModelForm()
+        context['formMultyTag'] = TagMultiplyForm()
         return context
+
+    def post(self, request, *args, **kwargs):
+        obj = Post.objects.get(pk=kwargs['pk'])
+        formPost = PostModelForm(request.POST, instance=obj)
+        formTag = TagModelForm(request.POST)
+
+        # print(formTag.is_valid(), formPost.is_valid())
+        if formTag.is_valid():
+            formTag.save()
+            return render(request, 'post.html', {
+                'formMultyTag': TagMultiplyForm(),
+                'formNewTag': TagModelForm(),
+                'form': formPost,
+            })
+        elif request.POST.get('name'):
+            return render(request, 'post.html', {
+                'formMultyTag': TagMultiplyForm(),
+                'formNewTag': formTag,
+                'form': formPost,
+            })
+
+        # Return the standard post method if the New tag is not specified 
+        return super(UpdatePostFormView, self).post(self, request, *args, **kwargs)
 
 
 class CreateTagView(CreateView):
@@ -72,23 +119,12 @@ class CreateTagView(CreateView):
         context.update(self.kwargs)
         context['formNewTag'] = context.pop('form')
         context['formMultyTag'] = TagMultiplyForm()
-        # context['form]
+        context['form'] = PostModelForm()
         print(context)
         return context
-
-# ++> how form is get from CreateView
-# FormView with two Forms!!!!
-
-    # def get_success_url(self):
-    #     return redirect(self.request.META.get('HTTP_REFERER'))
 
 
 class DeletePostView(DeleteView):
     model = Post
     template_name = 'confirm_delete.html'
     success_url = '/'
-
-"""
-1. --> cretaeview --> post (tag form and post form)
-2. separate post handle logic 
-"""

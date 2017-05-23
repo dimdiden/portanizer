@@ -1,5 +1,5 @@
 from django import forms
-from posts.models import Tag
+from posts.models import Tag, Post
 
 
 class TagModelForm(forms.ModelForm):
@@ -13,3 +13,9 @@ class TagMultiplyForm(forms.Form):
         widget=forms.CheckboxSelectMultiple,
         queryset=Tag.objects.all().order_by('name')
     )
+
+
+class PostModelForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = '__all__'
