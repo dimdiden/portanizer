@@ -34,3 +34,6 @@ body {
     background-color:#688887;
     padding-top: 70px; /*for fixed nav bar*/
 }
+.errorlist {
+    color: #bd5c83;
+}

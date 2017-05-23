@@ -2,7 +2,7 @@ from django import forms
 from posts.models import Tag
 
 
-class TagForm(forms.ModelForm):
+class TagModelForm(forms.ModelForm):
     class Meta:
         model = Tag
         fields = '__all__'

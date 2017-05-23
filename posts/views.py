@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 # from django.views.generic.edit import FormMixin
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from posts.models import Post, Tag
-from posts.forms import TagMultiplyForm, TagForm
+from posts.forms import TagMultiplyForm, TagModelForm
 
 
 """
@@ -27,7 +27,7 @@ class PostListView(ListView):
             posts = Post.objects.filter(tag__in=tags).distinct()
         return render(request, self.template_name, {
             'posts': posts,
-            'form': TagMultiplyForm(),
+            'formMultyTag': TagMultiplyForm(),
         })
 
 
@@ -39,7 +39,8 @@ class CreatePostView(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(CreatePostView, self).get_context_data(**kwargs)
-        context['formTag'] = TagForm()
+        context['formNewTag'] = TagModelForm()
+        context['formMultyTag'] = TagMultiplyForm()
         return context
 
 
@@ -56,7 +57,7 @@ class UpdatePostView(UpdateView):
     def get_context_data(self, **kwargs):
         context = super(UpdatePostView, self).get_context_data(**kwargs)
         context.update(self.kwargs)
-        context['formTag'] = TagForm()
+        context['formNewTag'] = TagModelForm()
         return context
 
 
@@ -65,6 +66,18 @@ class CreateTagView(CreateView):
     fields = '__all__'
     template_name = 'post.html'
     success_url = '/'
+
+    def get_context_data(self, **kwargs):
+        context = super(CreateTagView, self).get_context_data(**kwargs)
+        context.update(self.kwargs)
+        context['formNewTag'] = context.pop('form')
+        context['formMultyTag'] = TagMultiplyForm()
+        # context['form]
+        print(context)
+        return context
+
+# ++> how form is get from CreateView
+# FormView with two Forms!!!!
 
     # def get_success_url(self):
     #     return redirect(self.request.META.get('HTTP_REFERER'))
@@ -75,3 +88,7 @@ class DeletePostView(DeleteView):
     template_name = 'confirm_delete.html'
     success_url = '/'
 
+"""
+1. --> cretaeview --> post (tag form and post form)
+2. separate post handle logic 
+"""

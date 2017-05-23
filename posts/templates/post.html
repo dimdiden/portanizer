@@ -19,22 +19,19 @@
         <input type="submit" class="btn btn-success" value="Submit"/>
     </form>
 
-    {% url 'createpost' as url_createpost %}
-    {% if request.path != url_createpost %}        
+    {% url 'updatepost' pk as url_updatepost %}
+    {% if request.path == url_updatepost %}        
         <form class="form-group" action="{% url 'deletepost' pk %}" method="get" novalidate>
             <input type="submit" class="btn btn-danger" value="Delete"/>
         </form>
     {% endif %}
 
     <form class="form-inline" action ="{% url 'createtag' %}" method="post" novalidate>{% csrf_token %}
-        <div class="form-group">
         {{ form.title.errors }}
-        <label for="{{ formTag.name.id_for_label }}">New tag: </label>
-    {#         <label for="pwd">New Tag:</label> #}
-        {% render_field formTag.name class="form-control" %}
-            {# <input type="text" class="form-control" id="pwd"> #}
-          </div>
-          <button type="submit" class="btn btn-default">Create</button>
+        <label for="{{ formNewTag.name.id_for_label }}">New tag: </label>
+        {% render_field formNewTag.name class="form-control" %}
+        <input type="submit" class="btn btn-default" value="Create"/>
+        <p>{{ formNewTag.name.errors }}</p>
     </form>    
 
 </div>
