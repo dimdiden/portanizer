@@ -1,0 +1,8 @@
+{% extends "header_login.html" %}
+
+{% block content %}
+    <p>Don't Have an Account?</p>
+    <p><a href="{% url 'register' %}">Click here to register</a></p>
+
+    {% include "includes/form.html" %}
+{% endblock content %}

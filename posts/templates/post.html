@@ -3,34 +3,38 @@
 {% load widget_tweaks %}
 
 <div class="well well-sm">
-    <form class="form-group" action ="" method="post" novalidate>{% csrf_token %}        
-        <label for="{{ form.title.id_for_label }}">Title: </label>
-        {% render_field form.title class="form-control" %}
-        {{ form.title.errors }}
-        <p></p>
-        <label for="{{ form.body.id_for_label }}">Body: </label>
-        {% render_field form.body class="form-control" %}
-        {{ form.body.errors }}        
-        <p></p>
-        <label for="{{ form.tag.id_for_label }}">Tag: </label>
-        {% render_field form.tag class="form-control" %}
-        {{ form.tag.errors }}
-        <p></p>
-        {# form for tag creation #}
-        <label for="{{ formNewTag.name.id_for_label }}">New tag: </label>
-        {% render_field formNewTag.name class="form-control" %}
-{#         <input type="submit" class="btn btn-default" value="Create"/> #}
-        <p>{{ formNewTag.name.errors }}</p>
-
-        <input type="submit" class="btn btn-success" value="Submit"/>
-    </form>
 
     {% url 'updatepost' pk as url_updatepost %}
     {% if request.path == url_updatepost %}        
         <form class="form-group" action="{% url 'deletepost' pk %}" method="get" novalidate>
-            <input type="submit" class="btn btn-danger" value="Delete"/>
+            <button type="submit" class="btn btn-danger" aria-label="Left Align">
+                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+            </button>
         </form>
     {% endif %}
+
+    <form class="form-group" action ="" method="post" novalidate>{% csrf_token %}        
+        <label for="{{ form.title.id_for_label }}">Title: </label>
+        <p>{% render_field form.title class="form-control" %}</p>
+        {{ form.title.errors }}
+
+        <label for="{{ form.body.id_for_label }}">Body: </label>
+        <p>{% render_field form.body class="form-control" %}</p>
+        {{ form.body.errors }}        
+
+        <label for="{{ form.tag.id_for_label }}">Tag: </label>
+        <p>{% render_field form.tag class="form-control" %}</p>
+        {{ form.tag.errors }}
+        
+        {# form for tag creation #}
+        <label for="{{ formNewTag.name.id_for_label }}">New tag: </label>
+        <p>{% render_field formNewTag.name class="form-control" %}</p>
+        {{ formNewTag.name.errors }}
+
+        <button type="submit" class="btn btn-success" aria-label="Left Align">
+            <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+        </button>  
+    </form>
 
 {% comment %}
     <form class="form-inline" action ="" method="post" novalidate>{% csrf_token %}

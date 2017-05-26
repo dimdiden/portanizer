@@ -1,7 +1,14 @@
-from django.shortcuts import render
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.shortcuts import render, redirect
+from django.views.generic import (
+    ListView,
+    CreateView,
+    UpdateView,
+    DeleteView,
+    TemplateView,
+)
 from posts.models import Post, Tag
 from posts.forms import TagMultiplyForm, TagModelForm, PostModelForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 """
@@ -10,7 +17,7 @@ http://stackoverflow.com/questions/13416502/django-search-form-in-class-based-li
 """
 
 
-class PostListView(ListView):
+class PostListView(LoginRequiredMixin, ListView):
     model = Post
     template_name = 'index.html'
 
@@ -29,7 +36,7 @@ class PostListView(ListView):
         })
 
 
-class CreatePostFormView(CreateView):
+class CreatePostFormView(LoginRequiredMixin, CreateView):
     model = Post
     fields = '__all__'
     template_name = 'post.html'
@@ -70,7 +77,7 @@ class CreatePostFormView(CreateView):
         return super(CreatePostFormView, self).post(self, request, *args, **kwargs)
 
 
-class UpdatePostFormView(UpdateView):
+class UpdatePostFormView(LoginRequiredMixin, UpdateView):
     model = Post
     fields = '__all__'
     template_name = 'post.html'
@@ -108,23 +115,84 @@ class UpdatePostFormView(UpdateView):
         return super(UpdatePostFormView, self).post(self, request, *args, **kwargs)
 
 
-class CreateTagView(CreateView):
-    model = Tag
-    fields = '__all__'
-    template_name = 'post.html'
-    success_url = '/'
+# class CreateTagView(CreateView):
+#     model = Tag
+#     fields = '__all__'
+#     template_name = 'post.html'
+#     success_url = '/'
 
-    def get_context_data(self, **kwargs):
-        context = super(CreateTagView, self).get_context_data(**kwargs)
-        context.update(self.kwargs)
-        context['formNewTag'] = context.pop('form')
-        context['formMultyTag'] = TagMultiplyForm()
-        context['form'] = PostModelForm()
-        print(context)
-        return context
+#     def get_context_data(self, **kwargs):
+#         context = super(CreateTagView, self).get_context_data(**kwargs)
+#         context.update(self.kwargs)
+#         context['formNewTag'] = context.pop('form')
+#         context['formMultyTag'] = TagMultiplyForm()
+#         context['form'] = PostModelForm()
+#         print(context)
+#         return context
 
 
-class DeletePostView(DeleteView):
+class DeletePostView(LoginRequiredMixin, DeleteView):
     model = Post
     template_name = 'confirm_delete.html'
     success_url = '/'
+
+
+class UpdateTagFormView(LoginRequiredMixin, TemplateView):
+    template_name = 'tag_manager.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(UpdateTagFormView, self).get_context_data(**kwargs)
+        context['formMultyTag'] = TagMultiplyForm()
+        if 'formNewTag' in kwargs:
+            context['formNewTag'] = kwargs['formNewTag']
+        else:
+            context['formNewTag'] = TagModelForm()
+        context['forms'] = []
+        if 'tag' and 'formUpdTag' in kwargs:
+            queryset = Tag.objects.exclude(id=kwargs['tag'].id).order_by('name')
+            print(queryset)
+            formset = [kwargs['formUpdTag'], kwargs['tag'].id]
+            context['forms'].append(formset)
+            for tag in queryset:
+                formset = [TagModelForm(instance=tag), tag.id]
+                context['forms'].append(formset)
+        else:
+            queryset = Tag.objects.all().order_by('name')
+            for tag in queryset:
+                formset = [TagModelForm(instance=tag), tag.id]
+                context['forms'].append(formset)
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        # obj = Post.objects.get(pk=kwargs['pk'])
+        # formPost = PostModelForm(request.POST, instance=obj)
+        if 'pk' in kwargs:
+            obj = Tag.objects.get(pk=kwargs['pk'])
+            formTag = TagModelForm(request.POST, instance=obj)
+            if formTag.is_valid():
+                formTag.save()
+                return redirect('tagmanager')
+            else:
+                print('WRONG')
+                return render(request, 'tag_manager.html', self.get_context_data(formUpdTag=formTag, tag=obj))
+            return redirect('/')
+        else:
+            # print(kwargs)
+            formTag = TagModelForm(request.POST)
+
+            print(formTag.is_valid())
+            if formTag.is_valid():
+                formTag.save()
+                return redirect('tagmanager')
+            else:
+                return render(request, 'tag_manager.html', self.get_context_data(formNewTag=formTag))
+
+# https://stackoverflow.com/questions/866272/how-can-i-build-multiple-submit-buttons-django-form
+# http://kevindias.com/writing/django-class-based-views-multiple-inline-formsets/
+
+
+class DeleteTagView(LoginRequiredMixin, DeleteView):
+    model = Tag
+    template_name = 'confirm_delete.html'
+    success_url = '/tagmanager'

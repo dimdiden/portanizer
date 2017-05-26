@@ -35,5 +35,12 @@ body {
     padding-top: 70px; /*for fixed nav bar*/
 }
 .errorlist {
-    color: #bd5c83;
+    color: #c66610;
+}
+/*.glyphicon {
+    font-size: 50px;
+}*/
+.form-inline {
+  /*https://stackoverflow.com/questions/18587588/keep-two-html-forms-on-the-same-line-in-a-paragraph-tag*/
+    display: inline-block;
 }
