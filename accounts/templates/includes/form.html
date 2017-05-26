@@ -7,11 +7,12 @@
         <label for="{{ form.username.id_for_label }}">{{form.username.label}} </label>
         <p>{% render_field form.username class="form-control" %}</p>
         {{ form.username.errors }}
+        {{ form.non_field_errors }}
 
         <label for="{{ form.password.id_for_label }}">{{form.password.label}} </label>
         <p>{% render_field form.password class="form-control" %}</p>
         {{ form.password.errors }}
-        
+                
         {% if request.path == '/register/' %}       
             <label for="{{ form.password2.id_for_label }}">{{form.password2.label}} </label>
             <p>{% render_field form.password2 class="form-control" %}</p>

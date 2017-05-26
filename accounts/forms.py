@@ -18,12 +18,17 @@ class UserLoginForm(forms.Form):
         password = self.cleaned_data.get("password")
 
         if username and password:
-            user = authenticate(username=username, password=password)
+            try:
+                user = User.objects.get(username=username)
+            except User.DoesNotExist:
+                user = None
+
+            user_auth = authenticate(username=username, password=password)
             if not user:
                 raise forms.ValidationError("This user does not exist")
-            if not user.check_password(password):
+            if not user_auth:
                 raise forms.ValidationError("Incorrect password")
-            if not user.is_active:
+            if not user_auth.is_active:
                 raise forms.ValidationError("The user is no longer active")
         return super(UserLoginForm, self).clean(*args, **kwargs)
 
@@ -47,9 +52,9 @@ class UserRegisterForm(forms.ModelForm):
     def clean(self, *args, **kwargs):
         password = self.cleaned_data.get('password')
         password2 = self.cleaned_data.get('password2')
-        
+
         if password and len(password) <= 6:
-            raise forms.ValidationError("Passwords must contain not less than 6 characters")        
+            raise forms.ValidationError("Passwords must contain not less than 6 characters")
         if password != password2:
             raise forms.ValidationError("Passwords must match")
 
