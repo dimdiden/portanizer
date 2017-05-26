@@ -1,0 +1,328 @@
+[
+{
+    "model": "posts.post",
+    "pk": 1,
+    "fields": {
+        "title": "Copy tables into csv",
+        "body": "select * from Accounts INTO OUTFILE '/tmp/Accounts_slave.csv' FIELDS TERMINATED BY ',' ENCLOSED BY '\"' LINES TERMINATED BY '\\n';\r\nLOAD DATA INFILE '/update_root/home/porta-one/UA_Types.csv' INTO TABLE UA_Types FIELDS TERMINATED BY ',' ENCLOSED BY '\"' LINES TERMINATED BY '\\n';",
+        "tag": [
+            2
+        ]
+    }
+},
+{
+    "model": "posts.post",
+    "pk": 2,
+    "fields": {
+        "title": "change master",
+        "body": "CHANGE MASTER TO MASTER_HOST = 'porta-db-standby', MASTER_USER = 'porta-repl', MASTER_PASSWORD = 'porta-repl', MASTER_PORT = 3306, MASTER_CONNECT_RETRY = 60, MASTER_LOG_FILE = 'mysql-bin.002895', MASTER_LOG_POS = 14935115",
+        "tag": [
+            2
+        ]
+    }
+},
+{
+    "model": "posts.post",
+    "pk": 3,
+    "fields": {
+        "title": "\u0412\u044b\u0432\u0435\u0441\u0442\u0438 \u0434\u0438\u0441\u043a \u0438\u0437 \u0433\u0440\u0443\u043f\u043f\u044b",
+        "body": "sudo megacli -PDOffline -PhysDrv [32:2] -a0\r\nsudo megacli -PDMarkMissing -PhysDrv [32:2] -a0\r\nsudo megacli -PDPrpRmv -PhysDrv [32:2] -a0",
+        "tag": [
+            3
+        ]
+    }
+},
+{
+    "model": "posts.post",
+    "pk": 4,
+    "fields": {
+        "title": "\u041f\u043e\u0441\u043c\u043e\u0442\u0440\u0435\u0442\u044c",
+        "body": "SUM=0; for PID in `sudo ps auxww |sort -g -k6 |tail -20 | awk {'print $2'}`; do PROGNAME=`ps -p $PID -o comm --no-headers`; for SWAP in `sudo grep Swap /proc/$PID/smaps 2>/dev/null| awk '{ print $2 }'`; do let SUM=$SUM+$SWAP; done; let SUM=$SUM/1024; if [ $SUM -ne 0 ]; then echo \"PID= $PID - SwapUsed= $SUM - PROCESS= $PROGNAME\"; fi; done | sort -g -k5",
+        "tag": [
+            5,
+            6
+        ]
+    }
+},
+{
+    "model": "posts.post",
+    "pk": 5,
+    "fields": {
+        "title": "\u041d\u0430\u0441\u0442\u0440\u043e\u0439\u043a\u0430",
+        "body": "cat /proc/sys/vm/swappiness\r\nsudo sysctl vm.swappiness=20",
+        "tag": [
+            5,
+            6
+        ]
+    }
+},
+{
+    "model": "posts.post",
+    "pk": 6,
+    "fields": {
+        "title": "\u0412\u044b\u0433\u0440\u0443\u0437\u043a\u0430",
+        "body": "sudo ionice -c3 sudo swapoff -a&& sudo swapon -a",
+        "tag": [
+            5,
+            6
+        ]
+    }
+},
+{
+    "model": "posts.post",
+    "pk": 7,
+    "fields": {
+        "title": "Update",
+        "body": "sudo ntpdate -u pool.ntp.org - \u0442\u043e\u043b\u044c\u043a\u043e \u0434\u043b\u044f \u044d\u0442\u043e\u0433\u043e \u0445\u043e\u0441\u0442\u0430\r\nsudo ntpdate -d -u pool.ntp.org - \u0434\u043b\u044f \u0432\u0441\u0435\u0445 \u043a\u0440\u043e\u043c\u0435 \u044d\u0442\u043e\u0433\u043e \u0445\u043e\u0441\u0442\u0430",
+        "tag": [
+            7,
+            8
+        ]
+    }
+},
+{
+    "model": "posts.post",
+    "pk": 8,
+    "fields": {
+        "title": "\u0420\u0430\u0441\u0448\u0438\u0440\u0438\u0442\u044c \u041b\u0412\u041c",
+        "body": "sudo su\r\nlsblk\r\nfdisk /dev/sdb\r\npvcreate /dev/sdb1\r\nvgextend VolGroup01 /dev/sdb1\r\npvmove -n /dev/VolGroup01/LogVol02 /dev/sda2 /dev/sdb1\r\nlvextend -l35735 /dev/VolGroup01/LogVol02\r\nresize2fs /dev/VolGroup01/LogVol02\r\nsudo pvs -v --segments",
+        "tag": [
+            9,
+            21
+        ]
+    }
+},
+{
+    "model": "posts.post",
+    "pk": 9,
+    "fields": {
+        "title": "Test email",
+        "body": "exim -bt porta-one",
+        "tag": [
+            10,
+            11
+        ]
+    }
+},
+{
+    "model": "posts.post",
+    "pk": 10,
+    "fields": {
+        "title": "routing based on source IP address",
+        "body": "less /etc/rc.local\r\nless /home/porta-one/ip_route_add_web_pure_ip.sh\r\nip route show table T1\r\nip route show table main\r\nip rule show\r\nless /etc/iproute2/rt_tables\r\nhttps://rt.portaone.com/Ticket/Display.html?id=512363",
+        "tag": [
+            12
+        ]
+    }
+},
+{
+    "model": "posts.post",
+    "pk": 11,
+    "fields": {
+        "title": "convert crt to pem",
+        "body": "openssl x509 -in softcall.me.crt -out domain_cert_tls.softcall.me.pem -outform PEM",
+        "tag": [
+            13
+        ]
+    }
+},
+{
+    "model": "posts.post",
+    "pk": 12,
+    "fields": {
+        "title": "Add local monitor",
+        "body": "/etc/sysconfig/porta-monitor\r\nLOCAL=1",
+        "tag": [
+            14,
+            15
+        ]
+    }
+},
+{
+    "model": "posts.post",
+    "pk": 13,
+    "fields": {
+        "title": "ARP issue",
+        "body": "sudo tcpdump -i em2 -n -vvvv -tttt -e -X 'proto \\icmp'\r\nsudo tcpdump -i any -n -vvvv -tttt -e -X ' arp' | grep \"who-has 203.153.165.114\"\r\nsudo arping -I em1 -b -c 1 203.153.165.114 \r\nsudo sysctl -w net.ipv4.conf.all.arp_announce=2\r\nsudo sysctl -w net.ipv4.conf.all.arp_filter=1\r\nsudo sysctl -w net.ipv4.conf.all.arp_ignore=1",
+        "tag": [
+            12,
+            16,
+            17
+        ]
+    }
+},
+{
+    "model": "posts.post",
+    "pk": 14,
+    "fields": {
+        "title": "\u0412\u044b\u0442\u044f\u043d\u0443\u0442\u044c \u043b\u043e\u0433\u0438 \u0438\u0437 \u044d\u043b\u0430\u0441\u0442\u0438\u043a\u0430",
+        "body": "sudo logs-extractor.pl --date_from=\"2016-09-11T06:04:00\" --date_to=\"2016-09-11T06:10:00\" > ~/06_04--06_10sip.log",
+        "tag": [
+            18,
+            19
+        ]
+    }
+},
+{
+    "model": "posts.post",
+    "pk": 15,
+    "fields": {
+        "title": "Reboot",
+        "body": "echo 1 > /proc/sys/kernel/sysrq && echo b > /proc/sysrq-trigger",
+        "tag": [
+            20
+        ]
+    }
+},
+{
+    "model": "posts.post",
+    "pk": 16,
+    "fields": {
+        "title": "Kill query directly in mysql",
+        "body": "mysql -uroot porta-billing -e 'kill query 1861406';",
+        "tag": [
+            2
+        ]
+    }
+},
+{
+    "model": "posts.tag",
+    "pk": 2,
+    "fields": {
+        "name": "Mysql"
+    }
+},
+{
+    "model": "posts.tag",
+    "pk": 3,
+    "fields": {
+        "name": "Disk Health"
+    }
+},
+{
+    "model": "posts.tag",
+    "pk": 4,
+    "fields": {
+        "name": "Reply"
+    }
+},
+{
+    "model": "posts.tag",
+    "pk": 5,
+    "fields": {
+        "name": "Memory"
+    }
+},
+{
+    "model": "posts.tag",
+    "pk": 6,
+    "fields": {
+        "name": "Swap"
+    }
+},
+{
+    "model": "posts.tag",
+    "pk": 7,
+    "fields": {
+        "name": "Ntp"
+    }
+},
+{
+    "model": "posts.tag",
+    "pk": 8,
+    "fields": {
+        "name": "Chronyd"
+    }
+},
+{
+    "model": "posts.tag",
+    "pk": 9,
+    "fields": {
+        "name": "LVM"
+    }
+},
+{
+    "model": "posts.tag",
+    "pk": 10,
+    "fields": {
+        "name": "Exim"
+    }
+},
+{
+    "model": "posts.tag",
+    "pk": 11,
+    "fields": {
+        "name": "Email"
+    }
+},
+{
+    "model": "posts.tag",
+    "pk": 12,
+    "fields": {
+        "name": "Routing"
+    }
+},
+{
+    "model": "posts.tag",
+    "pk": 13,
+    "fields": {
+        "name": "Certs"
+    }
+},
+{
+    "model": "posts.tag",
+    "pk": 14,
+    "fields": {
+        "name": "Monitor"
+    }
+},
+{
+    "model": "posts.tag",
+    "pk": 15,
+    "fields": {
+        "name": "Nagios"
+    }
+},
+{
+    "model": "posts.tag",
+    "pk": 16,
+    "fields": {
+        "name": "Arp"
+    }
+},
+{
+    "model": "posts.tag",
+    "pk": 17,
+    "fields": {
+        "name": "Tcpdump"
+    }
+},
+{
+    "model": "posts.tag",
+    "pk": 18,
+    "fields": {
+        "name": "Elasticsearch"
+    }
+},
+{
+    "model": "posts.tag",
+    "pk": 19,
+    "fields": {
+        "name": "Logs"
+    }
+},
+{
+    "model": "posts.tag",
+    "pk": 20,
+    "fields": {
+        "name": "Boot"
+    }
+},
+{
+    "model": "posts.tag",
+    "pk": 21,
+    "fields": {
+        "name": "Disk space"
+    }
+}
+]
