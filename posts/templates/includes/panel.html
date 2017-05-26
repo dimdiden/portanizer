@@ -18,29 +18,27 @@
     </div>  
 </form>
 {% endcomment %}
-
+{% load widget_tweaks %}
 
 {#!!!!! http://stackoverflow.com/questions/23103567/bootstrap-dropdown-checkbox-select               #}
 {# https://behigh.github.io/bootstrap_dropdowns_enhancement/#inputs-disable-label-replacement #}
-<form action="{% url 'index' %}" method="GET">
+<form class="form-inline" action="{% url 'index' %}" method="GET">
     <div class="btn-group navbar-btn"><!--navbar-btn-->
         <button class="btn btn-primary">ShowMe!</button>
         <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" data-placeholder="false"> <span class="caret"></span></button>
      
         <ul class="dropdown-menu">
-        {% for checkbox in formMultyTag.select_tag %}
-            <li>
-                {{ checkbox.tag }}
-                <label for="{{ checkbox.id_for_label }}">{{ checkbox.choice_label }}</label>
-            </li>
-        {% endfor %}
-            
-          {# <li> #}
-            {# <input type="checkbox" id="ex6_1" name="ex6" value="1"> #}
-            {# <label for="ex6_1">Option1</label> #}
-          {# </li> #}
-          
+            {% for checkbox in formMultyTag.select_tag %}
+                <li>
+                    {{ checkbox.tag }}
+                    <label for="{{ checkbox.id_for_label }}">{{ checkbox.choice_label }}</label>
+                </li>
+            {% endfor %}  
         </ul>
     </div>
 </form>
-
+<form class="form-inline" action="{% url 'unassigned' %}" method="GET">
+    <button class="btn btn-primary">
+        <span class="glyphicon glyphicon-transfer" aria-hidden="true"></span>
+    </button>
+</form>

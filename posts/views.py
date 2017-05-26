@@ -27,13 +27,26 @@ class PostListView(LoginRequiredMixin, ListView):
         http://stackoverflow.com/questions/33876790/how-to-check-for-a-post-method-in-a-listview-in-django-views-im-getting-a-405
         """
         posts = self.get_queryset()
-        if request.GET.getlist('select_tag'):
+        if request.path == '/unassigned/':
+            posts = Post.objects.filter(tag__isnull=True).distinct()
+        elif request.GET.getlist('select_tag'):
             tags = request.GET.getlist('select_tag')
-            posts = Post.objects.filter(tag__in=tags).distinct()
+            posts = Post.objects.filter(tag__in=tags).distinct()     
         return render(request, self.template_name, {
             'posts': posts,
             'formMultyTag': TagMultiplyForm(),
         })
+
+        # def get_queryset(self):
+        #     """
+        #     If an extra key is passed(url), the specific page is displayed.
+        #     """
+        #     if 'extra' in self.kwargs and self.kwargs['extra'] == 'last_24_hours':
+        #         last_24_hours = datetime.today() - timedelta(days=1)
+        #         return Product.objects.all().filter(created_at__gte=last_24_hours)
+        #     else:
+        #         return Product.objects.all().filter(
+        #             category=Category.objects.get(slug=self.kwargs['category_slug']))
 
 
 class CreatePostFormView(LoginRequiredMixin, CreateView):
