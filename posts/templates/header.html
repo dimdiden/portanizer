@@ -17,18 +17,25 @@
 
              <nav class="navbar navbar-default navbar-fixed-top"><!--navbar navbar-inverse-->
               <div class="container"><!--container-fluid-->
-                <div class="navbar-header">                
-                {% include "includes/panel.html" %}
-                  {# <a class="navbar-brand" href="/">Portanizer</a> #}
+                <div class="navbar-header">
+                  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span> 
+                  </button>
+                  <a class="navbar-brand" href="/">Portanizer</a>
                 </div>
-                <ul class="nav navbar-nav">
-                  <li><a href="{% url 'createpost' %}">Create Post</a></li>
-                  <li><a href="{% url 'tagmanager' %}">Tag Manager</a></li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                  <li><a href=""><span class="glyphicon glyphicon-user"></span> {{request.user.username}}</a></li>
-                  <li><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
-                </ul>
+                <div class="collapse navbar-collapse" id="myNavbar">
+                  <ul class="nav navbar-nav">
+                    <li>{% include "includes/panel.html" %}</li>
+                    <li><a href="{% url 'createpost' %}">Create Post</a></li>
+                    <li><a href="{% url 'tagmanager' %}">Tag Manager</a></li>
+                  </ul>
+                  <ul class="nav navbar-nav navbar-right">
+                    <li><a href=""><span class="glyphicon glyphicon-user"></span> {{request.user.username}}</a></li>
+                    <li><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                  </ul>
+                </div>
               </div>
             </nav>
 
