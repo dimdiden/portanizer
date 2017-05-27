@@ -26,13 +26,25 @@
   background-color: transparent;
 }*/
 
-
-.row {
-    margin-top:10px; 
+/*::-webkit-scrollbar {
+display: none;
+}*/
+.login-sm {
+    width:70%;
+    margin: 0 auto;
 }
+/*.row {
+    margin-top:10px; 
+}*/
+/*.porta-navbar {
+    margin: 0;
+    overflow-y: scroll;
+}*/
 body {
     background-color:#688887;
     padding-top: 70px; /*for fixed nav bar*/
+    /*overflow-y:hidden;*/
+    overflow-y: scroll;
 }
 .errorlist {
     color: #c66610;

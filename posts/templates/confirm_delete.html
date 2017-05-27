@@ -1,9 +1,8 @@
 {% extends "header.html" %}
 {% block content %}
 <div class="well well-sm">
-    <form class="form-group" action="" method="post">{% csrf_token %}
-        <p>Are you sure you want to delete "{{ object }}"?</p>
-        <input class="btn btn-danger" type="submit" value="Confirm" />
-    </form>
+  <form class="form-group" action="" method="post">{% csrf_token %}
+    <p>Are you sure you want to delete "{{ object }}"? <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-trash" aria-hidden="true"></button></p>
+  </form>
 </div>
 {% endblock content %}

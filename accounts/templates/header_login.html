@@ -10,20 +10,14 @@
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
 </head>
 <body>
-    <div class="container">
-        {% comment %}
-        <div class="row">
-            <div class="btn-group">
-                <button type="button" class="btn btn-primary">Login</button>
-                <button type="button" class="btn btn-primary">Register</button>
-            </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="well well-sm login-sm">
+          {% block content %}    
+          {% endblock content %}
         </div>
-        {% endcomment %}
-        <div class="row">
-            <div class="well well-sm">
-                {% block content %}    
-                {% endblock content %}
-            </div>
-        </div>
+      </div>
     </div>
+  </div>
 </body>

@@ -1,19 +1,23 @@
-{% load static %} 
+{% load static %}
 {% for post in posts %}
+<div class="row">
+  <div class="col-xs-12">
     <div class="well well-sm">
-        <p>
-            <a href="{{post.get_absolute_url}}">
-                <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> {{post.title}}
-            </a>
-            <a href="{% url 'deletepost' post.id %}" style="float: right">
-                <span class="glyphicon glyphicon-trash" aria-hidden="true">
-            </a>
-        </p>             
-        <pre>{{post.body}}</pre>
-        <p>
-            {% for tag in post.tag.all %}
-            <span class="glyphicon glyphicon-tag" aria-hidden="true"></span> {{tag}}
-            {% endfor %}
-        </p>
-    </div>                     
+      <p>
+        <a href="{{post.get_absolute_url}}">
+          <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> {{post.title}}
+        </a>
+        <a href="{% url 'deletepost' post.id %}" style="float: right">
+          <span class="glyphicon glyphicon-trash" aria-hidden="true">
+        </a>
+      </p>             
+      <pre>{{post.body}}</pre>
+      <p>
+        {% for tag in post.tag.all %}
+          <span class="glyphicon glyphicon-tag" aria-hidden="true"></span> {{tag}}
+        {% endfor %}
+      </p>
+    </div>
+  </div>
+</div>                     
 {% endfor %}
