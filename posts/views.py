@@ -8,7 +8,7 @@ from django.views.generic import (
 )
 from posts.models import Post, Tag
 from posts.forms import TagMultiplyForm, TagModelForm
-from django.views.generic.base import ContextMixin
+# from django.views.generic.base import ContextMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 
@@ -18,16 +18,16 @@ http://stackoverflow.com/questions/13416502/django-search-form-in-class-based-li
 """
 
 
-class TagMultiplyFormMixin(ContextMixin):
+# class TagMultiplyFormMixin(ContextMixin):
 
-    # https://stackoverflow.com/questions/10337290/extending-generic-view-classes-for-common-get-context-data
-    def get_context_data(self, **kwargs):
-        context = super(TagMultiplyFormMixin, self).get_context_data(**kwargs)
-        context['formMultyTag'] = TagMultiplyForm()
-        return context
+#     # https://stackoverflow.com/questions/10337290/extending-generic-view-classes-for-common-get-context-data
+#     def get_context_data(self, **kwargs):
+#         context = super(TagMultiplyFormMixin, self).get_context_data(**kwargs)
+#         context['formMultyTag'] = TagMultiplyForm()
+#         return context
 
 
-class PostListView(LoginRequiredMixin, TagMultiplyFormMixin, ListView):
+class PostListView(LoginRequiredMixin, ListView):
     model = Post
     template_name = 'index.html'
 
@@ -48,7 +48,7 @@ class PostListView(LoginRequiredMixin, TagMultiplyFormMixin, ListView):
         # should implement get_queryset() method
 
 
-class CreatePostFormView(LoginRequiredMixin, TagMultiplyFormMixin, CreateView):
+class CreatePostFormView(LoginRequiredMixin, CreateView):
     model = Post
     fields = '__all__'
     template_name = 'post.html'
@@ -98,7 +98,7 @@ class CreatePostFormView(LoginRequiredMixin, TagMultiplyFormMixin, CreateView):
         return super(CreatePostFormView, self).post(self, request, *args, **kwargs)
 
 
-class UpdatePostFormView(LoginRequiredMixin, TagMultiplyFormMixin, UpdateView):
+class UpdatePostFormView(LoginRequiredMixin, UpdateView):
     model = Post
     fields = '__all__'
     template_name = 'post.html'
@@ -164,7 +164,7 @@ class DeletePostView(LoginRequiredMixin, DeleteView):
     success_url = '/'
 
 
-class TagManagerView(LoginRequiredMixin, TagMultiplyFormMixin, TemplateView):
+class TagManagerView(LoginRequiredMixin, TemplateView):
     template_name = 'tag_manager.html'
 
     def get_context_data(self, **kwargs):
