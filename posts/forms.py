@@ -1,5 +1,5 @@
 from django import forms
-from posts.models import Tag, Post
+from posts.models import Tag
 
 
 class TagModelForm(forms.ModelForm):
@@ -15,7 +15,7 @@ class TagMultiplyForm(forms.Form):
     )
 
 
-class PostModelForm(forms.ModelForm):
-    class Meta:
-        model = Post
-        fields = '__all__'
+# class PostModelForm(forms.ModelForm):
+#     class Meta:
+#         model = Post
+#         fields = '__all__'

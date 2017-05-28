@@ -23,20 +23,20 @@
 {#!!!!! http://stackoverflow.com/questions/23103567/bootstrap-dropdown-checkbox-select               #}
 {# https://behigh.github.io/bootstrap_dropdowns_enhancement/#inputs-disable-label-replacement #}
 <form class="form-inline" action="{% url 'index' %}" method="GET">
-    <div class="btn-group navbar-btn"><!--navbar-btn-->
-        <button class="btn btn-primary">ShowMe!</button>
-        <a class="btn btn-primary" href="{% url 'unassigned' %}">
-            <span class="glyphicon glyphicon-indent-right" aria-hidden="true"></span>
-        </a>
-        <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" data-placeholder="false"> <span class="caret"></span></button>
-     
-        <ul class="dropdown-menu pull-right">
-            {% for checkbox in formMultyTag.select_tag %}
-                <li>
-                    {{ checkbox.tag }}
-                    <label for="{{ checkbox.id_for_label }}">{{ checkbox.choice_label }}</label>
-                </li>
-            {% endfor %}  
-        </ul>
-    </div>
+  <div class="btn-group navbar-btn"><!--navbar-btn-->
+    <button class="btn btn-primary">ShowMe!</button>
+    <a class="btn btn-primary" href="{% url 'unassigned' %}">
+        <span class="glyphicon glyphicon-indent-right" aria-hidden="true"></span>
+    </a>
+    <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" data-placeholder="false"> <span class="caret"></span></button>
+ 
+    <ul class="dropdown-menu pull-right">
+        {% for checkbox in formMultyTag.select_tag %}
+            <li>
+                {{ checkbox.tag }}
+                <label for="{{ checkbox.id_for_label }}">{{ checkbox.choice_label }}</label>
+            </li>
+        {% endfor %}  
+    </ul>
+  </div>
 </form>

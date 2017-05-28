@@ -3,7 +3,7 @@ from posts.views import (
     PostListView,
     CreatePostFormView,
     UpdatePostFormView,
-    UpdateTagFormView,
+    TagManagerView,
     DeletePostView,
     DeleteTagView,
 )
@@ -20,9 +20,9 @@ urlpatterns = [
     url(r'^deletepost/(?P<pk>[0-9]+)/',
         DeletePostView.as_view(), name='deletepost'),
     url(r'^tagmanager/$',
-        UpdateTagFormView.as_view(), name='tagmanager'),
+        TagManagerView.as_view(), name='tagmanager'),
     url(r'^tagmanager/(?P<pk>[0-9]+)/',
-        UpdateTagFormView.as_view(), name='tagmanager_upd'),
+        TagManagerView.as_view(), name='tagmanager_upd'),
     url(r'^tagmanager/delete/(?P<pk>[0-9]+)/',
         DeleteTagView.as_view(), name='tagmanager_del'),
 ]
