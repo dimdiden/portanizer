@@ -22,11 +22,22 @@
         <label for="{{ form.body.id_for_label }}">Body: </label>
         <p>{% render_field form.body class="form-control" placeholder="Enter main body" %}</p>
         {{ form.body.errors }}        
-
+        
         <label for="{{ form.tag.id_for_label }}">Tag: </label>
         <p>{% render_field form.tag class="form-control" %}</p>
         {{ form.tag.errors }}
         
+        {% comment %}
+        <div class="btn-group"><!--navbar-btn-->
+        <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" data-placeholder="false">ShowMe!</button>  
+        <ul class="dropdown-menu pull-middle pull-right">
+            {% for checkbox in form.tag %}
+                {{ checkbox }}
+             {% endfor %}  
+        </ul>
+      </div>
+      {% endcomment %}
+
         {# form for tag creation #}
         <label for="{{ formNewTag.name.id_for_label }}">New tag: </label>
         <p>{% render_field formNewTag.name class="form-control" placeholder="Enter new tag name" %}</p>
@@ -39,4 +50,4 @@
     </div><!--well-->
   </div><!--col-->
 </div><!--row-->
-{% endblock content %}
+{% endblock content %}s

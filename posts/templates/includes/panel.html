@@ -27,7 +27,7 @@
         <button class="btn btn-primary">ShowMe!</button>
         <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" data-placeholder="false"> <span class="caret"></span></button>
      
-        <ul class="dropdown-menu">
+        <ul class="dropdown-menu pull-right">
             {% for checkbox in formMultyTag.select_tag %}
                 <li>
                     {{ checkbox.tag }}

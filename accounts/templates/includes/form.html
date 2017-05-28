@@ -5,22 +5,22 @@
 <form class="form-group" action ="" method = "post" novalidate> {% csrf_token %}
     
   <label for="{{ form.username.id_for_label }}">{{form.username.label}} </label>
-  <p>{% render_field form.username class="form-control" %}</p>
+  <p>{% render_field form.username class="form-control" placeholder="Enter username" %}</p>
   {{ form.username.errors }}
   {{ form.non_field_errors }}
 
   <label for="{{ form.password.id_for_label }}">{{form.password.label}} </label>
-  <p>{% render_field form.password class="form-control" %}</p>
+  <p>{% render_field form.password class="form-control" placeholder="Enter password" %}</p>
   {{ form.password.errors }}
           
   {% if request.path == '/register/' %}       
       <label for="{{ form.password2.id_for_label }}">{{form.password2.label}} </label>
-      <p>{% render_field form.password2 class="form-control" %}</p>
+      <p>{% render_field form.password2 class="form-control" placeholder="Enter the same password" %}</p>
       {{ form.password2.errors }}
       {{ form.non_field_errors }}
       
       <label for="{{ form.email.id_for_label }}">{{form.email.label}} </label>
-      <p>{% render_field form.email class="form-control" %}</p>
+      <p>{% render_field form.email class="form-control" placeholder="Enter your email" %}</p>
   {% endif %}
 
 

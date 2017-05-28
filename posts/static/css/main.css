@@ -30,7 +30,7 @@
 display: none;
 }*/
 .login-sm {
-    width:70%;
+    width:50%;
     margin: 0 auto;
 }
 /*.row {
@@ -44,7 +44,7 @@ body {
     background-color:#688887;
     padding-top: 70px; /*for fixed nav bar*/
     /*overflow-y:hidden;*/
-    overflow-y: scroll;
+    overflow-y: scroll;/*not to rock the navbar*/
 }
 .errorlist {
     color: #c66610;
