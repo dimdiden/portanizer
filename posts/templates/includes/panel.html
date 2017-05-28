@@ -25,6 +25,9 @@
 <form class="form-inline" action="{% url 'index' %}" method="GET">
     <div class="btn-group navbar-btn"><!--navbar-btn-->
         <button class="btn btn-primary">ShowMe!</button>
+        <a class="btn btn-primary" href="{% url 'unassigned' %}">
+            <span class="glyphicon glyphicon-indent-right" aria-hidden="true"></span>
+        </a>
         <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" data-placeholder="false"> <span class="caret"></span></button>
      
         <ul class="dropdown-menu pull-right">
@@ -36,9 +39,4 @@
             {% endfor %}  
         </ul>
     </div>
-</form>
-<form class="form-inline" action="{% url 'unassigned' %}" method="GET">
-    <button class="btn btn-primary">
-        <span class="glyphicon glyphicon-transfer" aria-hidden="true"></span>
-    </button>
 </form>
