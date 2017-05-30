@@ -7,7 +7,7 @@ from django.views.generic import (
     TemplateView,
 )
 from posts.models import Post, Tag
-from posts.forms import TagMultiplyForm, TagModelForm
+from posts.forms import TagModelForm
 # from django.views.generic.base import ContextMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -16,15 +16,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 Django: Search form in Class Based ListView
 http://stackoverflow.com/questions/13416502/django-search-form-in-class-based-listview
 """
-
-
-# class TagMultiplyFormMixin(ContextMixin):
-
-#     # https://stackoverflow.com/questions/10337290/extending-generic-view-classes-for-common-get-context-data
-#     def get_context_data(self, **kwargs):
-#         context = super(TagMultiplyFormMixin, self).get_context_data(**kwargs)
-#         context['formMultyTag'] = TagMultiplyForm()
-#         return context
 
 
 class PostListView(LoginRequiredMixin, ListView):
@@ -44,7 +35,10 @@ class PostListView(LoginRequiredMixin, ListView):
             posts = Post.objects.filter(tag__in=tags).distinct()
 
         self.object_list = posts
-        return render(request, self.template_name, self.get_context_data(posts=posts))
+        return render(
+            request,
+            self.template_name,
+            self.get_context_data(posts=posts))
         # should implement get_queryset() method
 
 
@@ -58,44 +52,34 @@ class CreatePostFormView(LoginRequiredMixin, CreateView):
         context = super(CreatePostFormView, self).get_context_data(**kwargs)
 
         context['formNewTag'] = TagModelForm()
-        if 'formNewTag' in kwargs:
-            context['formNewTag'] = kwargs['formNewTag']
-        # context['form'] = PostModelForm()
-        # context['formNewTag'] = TagModelForm()
-        # context['formMultyTag'] = TagMultiplyForm()
+        # if formNewTag in kwargs - replace existed
+        context.update(kwargs)
         return context
 
     def post(self, request, *args, **kwargs):
-
         # to overcome the issue has no attribute 'object'
         self.object = None
 
-        # formPost = PostModelForm(request.POST)
         formTag = TagModelForm(request.POST)
 
-        """
-        Check if New tag form is valid or not.
-        https://stackoverflow.com/questions/569468/django-multiple-models-in-one-template-using-forms
-        """
-        if formTag.is_valid():
-            formTag.save()
-            return render(request, self.template_name, self.get_context_data())
-            # return render_to_response(self.get_context_data(form=formPost))
-            # return render(request, 'post.html', {
-            #     'formNewTag': TagModelForm(),
-            #     # 'formMultyTag': TagMultiplyForm(),
-            #     'form': formPost,
-            # })
-        elif request.POST.get('name'):
-            return render(request, self.template_name, self.get_context_data(formNewTag=formTag))
-            # return render(request, 'post.html', {
-            #     'formNewTag': formTag,
-            #     # 'formMultyTag': TagMultiplyForm(),
-            #     'form': formPost,
-            # })
+        # Separate processes for two forms based on name html attribute
+        if 'tag_submit' in request.POST:
+            if formTag.is_valid():
+                formTag.save()
+                return render(
+                    request,
+                    self.template_name,
+                    self.get_context_data())
+            # elif request.POST.get('name'):
+            else:
+                return render(
+                    request,
+                    self.template_name,
+                    self.get_context_data(formNewTag=formTag))
 
-        # Return the standard post method if the New tag is not specified 
-        return super(CreatePostFormView, self).post(self, request, *args, **kwargs)
+        # Return the standard post method if the New tag is not specified
+        return super(
+            CreatePostFormView, self).post(self, request, *args, **kwargs)
 
 
 class UpdatePostFormView(LoginRequiredMixin, UpdateView):
@@ -107,55 +91,35 @@ class UpdatePostFormView(LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super(UpdatePostFormView, self).get_context_data(**kwargs)
         context.update(self.kwargs)
-        # context['form'] = PostModelForm()
+
         context['formNewTag'] = TagModelForm()
-        if 'formNewTag' in kwargs:
-            context['formNewTag'] = kwargs['formNewTag']
-        # context['formMultyTag'] = TagMultiplyForm()
+        # if formNewTag in kwargs - replace existed. Also add pk to context
+        context.update(kwargs)
         return context
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
-        # obj = Post.objects.get(pk=kwargs['pk'])
-        # formPost = PostModelForm(request.POST, instance=obj)
-        # formPost = PostModelForm(request.POST, instance=self.object)
+
         formTag = TagModelForm(request.POST)
 
-        # print(formTag.is_valid(), formPost.is_valid())
-        if formTag.is_valid():
-            formTag.save()
-            return render(request, self.template_name, self.get_context_data())
-            # return render(request, 'post.html', {
-            #     'formMultyTag': TagMultiplyForm(),
-            #     'formNewTag': TagModelForm(),
-            #     'form': formPost,
-            # })
-        elif request.POST.get('name'):
-            return render(request, self.template_name, self.get_context_data(formNewTag=formTag))
-            # return render(request, 'post.html', {
-            #     # 'formMultyTag': TagMultiplyForm(),
-            #     'formNewTag': formTag,
-            #     # 'form': formPost,
-            # })
+        # Separate processes for two forms based on name html attribute
+        if 'tag_submit' in request.POST:
+            if formTag.is_valid():
+                formTag.save()
+                return render(
+                    request,
+                    self.template_name,
+                    self.get_context_data())
+            # elif request.POST.get('name'):
+            else:
+                return render(
+                    request,
+                    self.template_name,
+                    self.get_context_data(formNewTag=formTag))
 
-        # Return the standard post method if the New tag is not specified 
-        return super(UpdatePostFormView, self).post(self, request, *args, **kwargs)
-
-
-# class CreateTagView(CreateView):
-#     model = Tag
-#     fields = '__all__'
-#     template_name = 'post.html'
-#     success_url = '/'
-
-#     def get_context_data(self, **kwargs):
-#         context = super(CreateTagView, self).get_context_data(**kwargs)
-#         context.update(self.kwargs)
-#         context['formNewTag'] = context.pop('form')
-#         context['formMultyTag'] = TagMultiplyForm()
-#         context['form'] = PostModelForm()
-#         print(context)
-#         return context
+        # Return the standard post method if the New tag is not specified
+        return super(
+            UpdatePostFormView, self).post(self, request, *args, **kwargs)
 
 
 class DeletePostView(LoginRequiredMixin, DeleteView):
@@ -169,7 +133,6 @@ class TagManagerView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(TagManagerView, self).get_context_data(**kwargs)
-        # context['formMultyTag'] = TagMultiplyForm()
         context['formNewTag'] = TagModelForm()
         if 'formNewTag' in kwargs:
             context['formNewTag'] = kwargs['formNewTag']

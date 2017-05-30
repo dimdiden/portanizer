@@ -7,6 +7,13 @@ class TagModelForm(forms.ModelForm):
         model = Tag
         fields = '__all__'
 
+    # def clean(self):
+    #     if 'tag_submit' in self.data:
+    #         cleaned_data = super(TagModelForm, self).clean()
+    #         print(self.data)
+    #     else:
+    #         print('NO')
+
 
 class TagMultiplyForm(forms.Form):
     select_tag = forms.ModelMultipleChoiceField(
