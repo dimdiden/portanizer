@@ -6,6 +6,9 @@ class TagModelForm(forms.ModelForm):
     class Meta:
         model = Tag
         fields = '__all__'
+        labels = {
+            "name": "New tag"
+        }
 
     # def clean(self):
     #     if 'tag_submit' in self.data:

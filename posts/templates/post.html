@@ -9,40 +9,47 @@
       {% if request.path == url_updatepost %}  
         <div class="form-group">
           <a href="{% url 'deletepost' pk %}" class="btn btn-default">
-            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+            <span class="glyphicon glyphicon-trash"></span>
           </a>
         </div>
       {% endif %}
       
       <form action ="" method="post" novalidate>{% csrf_token %}        
-        <div class="form-group">
-          <label for="{{ form.title.id_for_label }}">Title: </label>
-          {% render_field form.title class="form-control" placeholder="Enter post title" %}
-          {{ form.title.errors }}
-        </div>
-        <div class="form-group">
-          <label for="{{ form.body.id_for_label }}">Body: </label>
-          {% render_field form.body class="form-control" placeholder="Enter main body" %}
-          {{ form.body.errors }}
-        </div>      
-        <div class="form-group">
-          <label for="{{ form.tag.id_for_label }}">Tag: </label>
-          {% render_field form.tag class="form-control" %}
-          {{ form.tag.errors }}
-        </div>
-        <div class="form-group">
-          <div class="form-inline">
-            <label for="{{ formNewTag.name.id_for_label }}">New tag: </label>
-            {% render_field formNewTag.name class="form-control" placeholder="Enter new tag name" %}
-            <button name="tag_submit" type="submit" class="btn btn-default" aria-label="Left Align">
-              <span class="glyphicon glyphicon-save" aria-hidden="true"></span>
-            </button>
-            {{ formNewTag.name.errors }}
+        <div class="row form-group">
+          <div class="col-xs-8">
+            <label for="{{ form.title.id_for_label }}">{{ form.title.label }}</label>
+            {% render_field form.title class="form-control" placeholder="Enter post title" %}
+            {{ form.title.errors }}
           </div>
         </div>
         <div class="form-group">
-          <button name="post_submit" type="submit" class="btn btn-default" aria-label="Left Align">
-            <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+          <label for="{{ form.body.id_for_label }}">{{ form.body.label }}</label>
+          {% render_field form.body class="form-control" placeholder="Enter main body" %}
+          {{ form.body.errors }}
+        </div>      
+        <div class="row form-group">
+          <div class="col-xs-6">
+            <label for="{{ form.tag.id_for_label }}">{{ form.tag.label }}</label>
+            {% render_field form.tag class="form-control" %}
+            {{ form.tag.errors }}
+          </div>
+          <div class="col-xs-6">
+            <label for="{{ formNewTag.name.id_for_label }}">{{ formNewTag.name.label }}</label>
+            <div class = "input-group">
+              {% render_field formNewTag.name class="form-control" placeholder="Enter new tag name" %}
+              <span class="input-group-btn">
+                <button name="tag_submit" type="submit" class="btn btn-default">
+                  <span class="glyphicon glyphicon-save"></span>
+                </button>
+              </span>
+            </div>
+            {{ formNewTag.name.errors }}
+          </div>
+        </div><!--row form-group-->
+
+        <div class="form-group">
+          <button name="post_submit" type="submit" class="btn btn-default">
+            <span class="glyphicon glyphicon-ok"></span>
           </button>
         </div>
       </form> 
