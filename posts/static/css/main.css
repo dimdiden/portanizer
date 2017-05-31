@@ -1,14 +1,6 @@
-/*.btn-primary {
-    background-color: transparent;
-}
-.btn-success {
-    background-color: #337ab7;
-    border-color:#2e6da4;
-}
-.btn.btn-success:hover {
+/*.btn.btn-success:hover {
   background-color: #2e6da4;
-}
-*/
+}*/
 
 /*http://stackoverflow.com/questions/34536784/bootstrap-button-active-color-change*/
 /*.btn.btn-primary.focus,
@@ -16,34 +8,35 @@
   background-color: transparent;
 }*/
 
-
 /*.btn.btn-primary:hover {
   background-color: transparent;
+}*/
+
+/*.form-inline {
+  https://stackoverflow.com/questions/18587588/keep-two-html-forms-on-the-same-line-in-a-paragraph-tag
+    display: inline-block;
 }*/
 
 /*::-webkit-scrollbar {
 display: none;
 }*/
-.login-sm {
-    width:50%;
-    margin: 0 auto;
-}
-/*.row {
-    margin-top:10px; 
-}*/
+
 body {
-    background-color:#688887;
+    background-color:#74A4BC;
     padding-top: 70px; /*for fixed nav bar*/
     /*overflow-y:hidden;*/
     overflow-y: scroll;/*not to rock the navbar*/
 }
+/*To display register form with less width*/
+.login-sm {
+    width:50%;
+    margin: 0 auto;
+}
 .errorlist {
     color: #c66610;
 }
-/*.glyphicon {
-    font-size: 50px;
-}*/
-.form-inline {
-  /*https://stackoverflow.com/questions/18587588/keep-two-html-forms-on-the-same-line-in-a-paragraph-tag*/
-    display: inline-block;
+/*Add margin to columns*/
+/*https://coderwall.com/p/0jezca/vertical-spacing-for-bootstrap-columns*/
+.col-add-mrg {
+    margin-bottom: 8px;
 }
