@@ -37,11 +37,11 @@
             <label for="{{ formNewTag.name.id_for_label }}">{{ formNewTag.name.label }}</label>
             <div class = "input-group">
               {% render_field formNewTag.name class="form-control" placeholder="Enter new tag name" %}
-              <span class="input-group-btn">
+              <div class="input-group-btn">
                 <button name="tag_submit" type="submit" class="btn btn-default">
                   <span class="glyphicon glyphicon-save"></span>
                 </button>
-              </span>
+              </div>
             </div>
             {{ formNewTag.name.errors }}
           </div>
