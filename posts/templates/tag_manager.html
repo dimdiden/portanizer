@@ -23,12 +23,8 @@
       </form>
 
       <div class="row">
-        {# <div class="col-xs-12"> #}
-          {# <ul class="list-inline"> #}
           {% for formset in forms %}
-          {# <li> #}
           <div class="col-xs-4 col-add-mrg">
-            {# <div class = "input-group"> #}
               <form action ="{% url 'tagmanager_upd' formset.1 %}" method="post" novalidate>{% csrf_token %}
               <div class = "input-group">
               {# https://stackoverflow.com/questions/14351048/django-optional-url-parameters #}
@@ -45,11 +41,8 @@
                 </div>
               </form>            
           </div>
-          {# </li> #}
-            {{ formset.0.name.errors }}
+          {{ formset.0.name.errors }}
           {% endfor %}
-          {# </ul> #}
-        {# </div> #}
         </div><!--row-->
     </div><!--well-->
   </div><!--col-->
