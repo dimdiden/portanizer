@@ -37,6 +37,13 @@ body {
 }
 /*Add margin to columns*/
 /*https://coderwall.com/p/0jezca/vertical-spacing-for-bootstrap-columns*/
-.col-add-mrg {
+/*.col-add-mrg {
     margin-bottom: 8px;
+}*/
+.bottom-buffer { 
+    margin-bottom:8px;
+}
+.big-checkbox {
+    width: 15px;
+    height: 15px;
 }

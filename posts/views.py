@@ -7,7 +7,9 @@ from django.views.generic import (
     TemplateView,
 )
 from posts.models import Post, Tag
-from posts.forms import TagModelForm
+from posts.forms import TagModelForm, BaseTagFormSet
+from django.forms import modelformset_factory
+import math
 # from django.views.generic.base import ContextMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -52,6 +54,7 @@ class CreatePostFormView(LoginRequiredMixin, CreateView):
         context = super(CreatePostFormView, self).get_context_data(**kwargs)
 
         context['formNewTag'] = TagModelForm()
+
         # if formNewTag in kwargs - replace existed
         context.update(kwargs)
         return context
@@ -90,10 +93,13 @@ class UpdatePostFormView(LoginRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(UpdatePostFormView, self).get_context_data(**kwargs)
+
+        # to get the pk's
         context.update(self.kwargs)
 
         context['formNewTag'] = TagModelForm()
-        # if formNewTag in kwargs - replace existed. Also add pk to context
+
+        # if formNewTag in kwargs - replace existed
         context.update(kwargs)
         return context
 
@@ -129,56 +135,43 @@ class DeletePostView(LoginRequiredMixin, DeleteView):
 
 
 class TagManagerView(LoginRequiredMixin, TemplateView):
+
     template_name = 'tag_manager.html'
 
     def get_context_data(self, **kwargs):
         context = super(TagManagerView, self).get_context_data(**kwargs)
-        context['formNewTag'] = TagModelForm()
-        if 'formNewTag' in kwargs:
-            context['formNewTag'] = kwargs['formNewTag']
 
-        context['forms'] = []
-        if 'tag' and 'formUpdTag' in kwargs:
-            queryset = Tag.objects.exclude(id=kwargs['tag'].id).order_by('name')
-            formset = [kwargs['formUpdTag'], kwargs['tag'].id]
-            context['forms'].append(formset)
-            for tag in queryset:
-                formset = [TagModelForm(instance=tag), tag.id]
-                context['forms'].append(formset)
-        else:
-            queryset = Tag.objects.all().order_by('name')
-            for tag in queryset:
-                formset = [TagModelForm(instance=tag), tag.id]
-                context['forms'].append(formset)
+        # gets formset from get and post methods
+        context.update(kwargs)
 
+        # delimeter for columns
+        # -1 - extra form, then round to up value
+        context['column_count'] = math.ceil(
+            (kwargs['formset'].total_form_count() - 1) / 3)
         return context
 
+    def get(self, request, *args, **kwargs):
+        TagFormSet = modelformset_factory(
+            Tag,
+            fields='__all__',
+            formset=BaseTagFormSet,
+            can_delete=True)
+        print(TagFormSet().total_form_count())
+        return self.render_to_response(self.get_context_data(
+            formset=TagFormSet()))
+
     def post(self, request, *args, **kwargs):
-        # obj = Post.objects.get(pk=kwargs['pk'])
-        # formPost = PostModelForm(request.POST, instance=obj)
-        if 'pk' in kwargs:
-            obj = Tag.objects.get(pk=kwargs['pk'])
-            formTag = TagModelForm(request.POST, instance=obj)
-            if formTag.is_valid():
-                formTag.save()
-                return redirect('tagmanager')
-            else:
-                return render(request, self.template_name, self.get_context_data(formUpdTag=formTag, tag=obj))
+        TagFormSet = modelformset_factory(
+            Tag,
+            fields='__all__',
+            formset=BaseTagFormSet,
+            can_delete=True)
+
+        formset = TagFormSet(request.POST)
+
+        if formset.is_valid():
+            formset.save()
+            return redirect('tagmanager')
         else:
-            # print(kwargs)
-            formTag = TagModelForm(request.POST)
-
-            if formTag.is_valid():
-                formTag.save()
-                return redirect('tagmanager')
-            else:
-                return render(request, self.template_name, self.get_context_data(formNewTag=formTag))
-
-# https://stackoverflow.com/questions/866272/how-can-i-build-multiple-submit-buttons-django-form
-# http://kevindias.com/writing/django-class-based-views-multiple-inline-formsets/
-
-
-class DeleteTagView(LoginRequiredMixin, DeleteView):
-    model = Tag
-    template_name = 'confirm_delete.html'
-    success_url = '/tagmanager'
+            return self.render_to_response(self.get_context_data(
+                formset=formset))

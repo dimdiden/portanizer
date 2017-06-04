@@ -1,4 +1,5 @@
 from django import forms
+from django.forms import BaseModelFormSet
 from posts.models import Tag
 
 
@@ -29,3 +30,10 @@ class TagMultiplyForm(forms.Form):
 #     class Meta:
 #         model = Post
 #         fields = '__all__'
+
+
+class BaseTagFormSet(BaseModelFormSet):
+
+    def __init__(self, *args, **kwargs):
+        super(BaseTagFormSet, self).__init__(*args, **kwargs)
+        self.queryset = Tag.objects.all().order_by('-name')

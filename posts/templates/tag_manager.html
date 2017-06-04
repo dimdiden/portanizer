@@ -4,46 +4,55 @@
 <div class="row">
   <div class="col-xs-12">
     <div class="well well-sm">
+   
+      <form action ="" method="post" novalidate>{% csrf_token %}      
+      {{ formset.management_form }}
 
-      <form action ="{% url 'tagmanager' %}" method="post" novalidate>{% csrf_token %}
-        <div class="row form-group">
-          <div class="col-xs-4">
-            <label for="{{ formNewTag.name.id_for_label }}">{{ formNewTag.name.label }}</label>
-            <div class = "input-group">
-              {% render_field formNewTag.name class="form-control" placeholder="Enter new tag name" %} 
-              <div class="input-group-btn">       
-                <button type="submit" class="btn btn-default">
-                  <span class="glyphicon glyphicon-save"></span>
-                </button>
-              </div>               
-            </div>
-            {{ formNewTag.name.errors }}
-          </div>
-        </div>              
-      </form>
+        <div class="row bottom-buffer">
+          {% for form in formset reversed %}
+          {{form.id}}
 
-      <div class="row">
-          {% for formset in forms %}
+          {% if forloop.first %}
           <div class="col-xs-4 col-add-mrg">
-              <form action ="{% url 'tagmanager_upd' formset.1 %}" method="post" novalidate>{% csrf_token %}
-              <div class = "input-group">
-              {# https://stackoverflow.com/questions/14351048/django-optional-url-parameters #}
-                {% render_field formset.0.name class="form-control" %}
-                <div class="input-group-btn"> 
-                  <button type="submit" class="btn btn-default" aria-label="Left Align">
-                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-                  </button>                          
-              
-                  <a class="btn btn-default" href="{% url 'tagmanager_del' formset.1 %}">
-                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                  </a>
-                </div>
-                </div>
-              </form>            
+            <label for="id_name">New tag</label>
+            {% render_field form.name class="form-control" placeholder="Enter new tag"%}
+            {{form.name.errors}}
           </div>
-          {{ formset.0.name.errors }}
+        </div>
+          
+        <div class="row bottom-buffer">
+          <div class="col-xs-4 col-add-mrg">
+
+          {% else %}
+              <div class = "input-group">
+                {% render_field form.name class="form-control" %}
+                <span class="input-group-addon">
+                  {% render_field form.DELETE class="checkbox big-checkbox" %}
+                </span>
+              </div>
+              {{form.name.errors}}
+
+            {# count starts from 2 because of extra form #}
+            {% if forloop.counter|add:-1|divisibleby:column_count and not forloop.last %}
+          </div>
+          <div class="col-xs-4 col-add-mrg">
+            {% endif %}
+
+          {% endif %} 
           {% endfor %}
+          </div><!--col-->
         </div><!--row-->
+
+        <div class="row col-add-mrg">
+          <div class="col-xs-4 col-add-mrg">
+            <button type="submit" class="btn btn-default">
+              <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+            </button>
+          </div>
+        </div>
+
+      </form>
+      
     </div><!--well-->
   </div><!--col-->
 </div><!--row-->
