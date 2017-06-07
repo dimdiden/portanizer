@@ -2,7 +2,7 @@
 
 {% block content %}
   <p>
-      Don't Have an Account? == <a class="btn btn-xs btn-primary" href="{% url 'register' %}">To register</a>
+      Don't Have an Account? == <a class="btn btn-xs btn-primary" href="{% url 'authorization:register' %}">To register</a>
   </p>
 
   {% include "includes/form.html" %}

@@ -174,7 +174,7 @@ class TagManagerView(LoginRequiredMixin, TemplateView):
 
         if formset.is_valid():
             formset.save()
-            return redirect('tagmanager')
+            return redirect('posts:tagmanager')
         else:
             return self.render_to_response(self.get_context_data(
                 formset=formset))

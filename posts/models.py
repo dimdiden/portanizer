@@ -16,7 +16,7 @@ class Post(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('updatepost', kwargs={'pk': str(self.id)})
+        return reverse('posts:update', kwargs={'pk': str(self.id)})
 
 
 class Tag(models.Model):

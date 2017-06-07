@@ -10,12 +10,12 @@ from posts.views import (
 urlpatterns = [
     url(r'^$',
         PostListView.as_view(), name='index'),
-    url(r'^createpost/',
-        CreatePostFormView.as_view(), name='createpost'),
-    url(r'^updatepost/(?P<pk>[0-9]+)/',
-        UpdatePostFormView.as_view(), name='updatepost'),
-    url(r'^deletepost/(?P<pk>[0-9]+)/',
-        DeletePostView.as_view(), name='deletepost'),
+    url(r'^create/',
+        CreatePostFormView.as_view(), name='create'),
+    url(r'^update/(?P<pk>[0-9]+)/',
+        UpdatePostFormView.as_view(), name='update'),
+    url(r'^delete/(?P<pk>[0-9]+)/',
+        DeletePostView.as_view(), name='delete'),
     url(r'^tagmanager/$',
         TagManagerView.as_view(), name='tagmanager'),
 ]
