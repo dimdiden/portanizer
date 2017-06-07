@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.db.models import Q
 from django.views.generic import (
     ListView,
     CreateView,
@@ -29,19 +30,21 @@ class PostListView(LoginRequiredMixin, ListView):
         How to check for a POST method in a ListView in Django views?
         http://stackoverflow.com/questions/33876790/how-to-check-for-a-post-method-in-a-listview-in-django-views-im-getting-a-405
         """
-        posts = self.get_queryset()
-        if request.path == '/unassigned/':
+        tags = request.GET.getlist('select_tag') or None
+        has_unassigned = request.GET.get('show_unassigned') or None
+
+        if has_unassigned and tags:
+            posts = Post.objects.filter(Q(tag__isnull=True) | Q(tag__in=tags)).distinct()
+        elif has_unassigned:
             posts = Post.objects.filter(tag__isnull=True)
-        elif request.GET.getlist('select_tag'):
-            tags = request.GET.getlist('select_tag')
+        elif tags:
             posts = Post.objects.filter(tag__in=tags).distinct()
+        else:
+            posts = self.get_queryset()
 
         self.object_list = posts
-        return render(
-            request,
-            self.template_name,
-            self.get_context_data(posts=posts))
-        # should implement get_queryset() method
+        context = self.get_context_data(posts=self.object_list)
+        return self.render_to_response(context)
 
 
 class CreatePostFormView(LoginRequiredMixin, CreateView):

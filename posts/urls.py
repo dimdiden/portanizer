@@ -10,8 +10,6 @@ from posts.views import (
 urlpatterns = [
     url(r'^$',
         PostListView.as_view(), name='index'),
-    url(r'^unassigned/',
-        PostListView.as_view(), name='unassigned'),
     url(r'^createpost/',
         CreatePostFormView.as_view(), name='createpost'),
     url(r'^updatepost/(?P<pk>[0-9]+)/',
