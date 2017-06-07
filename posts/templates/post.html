@@ -28,12 +28,12 @@
           {{ form.body.errors }}
         </div>      
         <div class="row form-group">
-          <div class="col-xs-6">
+          <div class="col-xs-4">
             <label for="{{ form.tag.id_for_label }}">{{ form.tag.label }}</label>
             {% render_field form.tag class="form-control" %}
             {{ form.tag.errors }}
           </div>
-          <div class="col-xs-6">
+          <div class="col-xs-4">
             <label for="{{ formNewTag.name.id_for_label }}">{{ formNewTag.name.label }}</label>
             <div class = "input-group">
               {% render_field formNewTag.name class="form-control" placeholder="Enter new tag name" %}
