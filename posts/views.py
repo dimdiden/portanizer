@@ -25,26 +25,21 @@ class PostListView(LoginRequiredMixin, ListView):
     model = Post
     template_name = 'index.html'
 
-    def get(self, request, *args, **kwargs):
-        """
-        How to check for a POST method in a ListView in Django views?
-        http://stackoverflow.com/questions/33876790/how-to-check-for-a-post-method-in-a-listview-in-django-views-im-getting-a-405
-        """
-        tags = request.GET.getlist('select_tag') or None
-        has_unassigned = request.GET.get('show_unassigned') or None
+    def get_queryset(self):
+        queryset = super(PostListView, self).get_queryset()
+
+        tags = self.request.GET.getlist('select_tag') or None
+        has_unassigned = self.request.GET.get('show_unassigned') or None
 
         if has_unassigned and tags:
-            posts = Post.objects.filter(Q(tag__isnull=True) | Q(tag__in=tags)).distinct()
+            return queryset.filter(
+                Q(tag__isnull=True) | Q(tag__in=tags)).distinct()
         elif has_unassigned:
-            posts = Post.objects.filter(tag__isnull=True)
+            return queryset.filter(tag__isnull=True)
         elif tags:
-            posts = Post.objects.filter(tag__in=tags).distinct()
-        else:
-            posts = self.get_queryset()
+            return queryset.filter(tag__in=tags).distinct()
 
-        self.object_list = posts
-        context = self.get_context_data(posts=self.object_list)
-        return self.render_to_response(context)
+        return queryset
 
 
 class CreatePostFormView(LoginRequiredMixin, CreateView):
