@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.db.models import Q
+from django.db.models import Count
 from django.views.generic import (
     ListView,
     CreateView,
@@ -28,15 +29,23 @@ class PostListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         queryset = super(PostListView, self).get_queryset()
 
-        tags = self.request.GET.getlist('select_tag') or None
-        has_unassigned = self.request.GET.get('show_unassigned') or None
+        tags = self.request.GET.getlist('select_tag')
+        condition = self.request.GET.get('condition')
 
-        if has_unassigned and tags:
+        unassigned = None if condition else self.request.GET.get('show_unassigned')
+
+        # if condition is present
+        # all statements with unassigned will be skipped
+        if unassigned and tags:
             return queryset.filter(
                 Q(tag__isnull=True) | Q(tag__in=tags)).distinct()
-        elif has_unassigned:
+        elif unassigned:
             return queryset.filter(tag__isnull=True)
         elif tags:
+            if condition:
+                return queryset.filter(tag__in=tags).annotate(
+                    matched_tags=Count('tag')).filter(matched_tags=len(tags))
+
             return queryset.filter(tag__in=tags).distinct()
 
         return queryset
