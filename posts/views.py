@@ -31,11 +31,12 @@ class PostListView(LoginRequiredMixin, ListView):
 
         tags = self.request.GET.getlist('select_tag')
         condition = self.request.GET.get('condition')
+        unassigned = self.request.GET.get('show_unassigned')
 
-        unassigned = None if condition else self.request.GET.get('show_unassigned')
+        # do not use unassigned when condition and tags are present
+        if condition and tags:
+            unassigned = None
 
-        # if condition is present
-        # all statements with unassigned will be skipped
         if unassigned and tags:
             return queryset.filter(
                 Q(tag__isnull=True) | Q(tag__in=tags)).distinct()
@@ -43,9 +44,11 @@ class PostListView(LoginRequiredMixin, ListView):
             return queryset.filter(tag__isnull=True)
         elif tags:
             if condition:
+                # return posts which include all tags
                 return queryset.filter(tag__in=tags).annotate(
                     matched_tags=Count('tag')).filter(matched_tags=len(tags))
 
+            # return posts matched any of tags
             return queryset.filter(tag__in=tags).distinct()
 
         return queryset
