@@ -1,9 +1,7 @@
 {% load widget_tweaks %}
 
-{#!!!!! http://stackoverflow.com/questions/23103567/bootstrap-dropdown-checkbox-select               #}
-{# https://behigh.github.io/bootstrap_dropdowns_enhancement/#inputs-disable-label-replacement #}
 <form class="form-inline" action="{% url 'posts:index' %}" method="GET">
-{# <input type="checkbox" checked data-toggle="toggle" data-on="Any" data-off="Only" data-onstyle="success" data-offstyle="warning" data-size="normal" name="condition" value="true"> #}
+
   <div class="btn-group navbar-btn"><!--navbar-btn-->
     <button class="btn btn-primary">ShowMe!</button>
     <input type="checkbox" data-width="35" data-toggle="toggle" data-on="All" data-off="Any" data-onstyle="warning" data-offstyle="primary" data-size="normal" name="condition" value="true">
@@ -24,7 +22,6 @@
       </li>
       {% endfor %}
     </ul>
-    {# <input type="checkbox" checked data-toggle="toggle" data-on="Any" data-off="Only" data-onstyle="success" data-offstyle="warning" data-size="normal"> #}
-  </div>
-  {# <input type="checkbox" checked data-toggle="toggle" data-on="Any" data-off="Only" data-onstyle="success" data-offstyle="warning" data-size="normal" name="condition" value="true"> #}
+  </div><!--btn-group navbar-btn-->
+ 
 </form>
