@@ -31,6 +31,10 @@ class TagMultiplyForm(forms.Form):
 #         model = Post
 #         fields = '__all__'
 
+    # def form_valid(self, form):
+    #     messages.info(self.request, 'Success!!!!')
+    #     return super(PostModelForm, self).form_valid(form)
+
 
 class BaseTagFormSet(BaseModelFormSet):
 
