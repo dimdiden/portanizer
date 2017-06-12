@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import BaseModelFormSet
-from posts.models import Tag
+from .models import Tag
 
 
 class TagModelForm(forms.ModelForm):

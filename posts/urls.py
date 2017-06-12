@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from posts.views import (
+from .views import (
     PostListView,
     CreatePostFormView,
     UpdatePostFormView,

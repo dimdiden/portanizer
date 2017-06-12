@@ -1,4 +1,8 @@
+import math
+
 from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.forms import modelformset_factory
 from django.shortcuts import render, redirect
 from django.db.models import Q
 from django.db.models import Count
@@ -9,12 +13,9 @@ from django.views.generic import (
     DeleteView,
     TemplateView,
 )
-from posts.models import Post, Tag
-from posts.forms import TagModelForm, BaseTagFormSet
-from django.forms import modelformset_factory
-import math
-# from django.views.generic.base import ContextMixin
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from .models import Post, Tag
+from .forms import TagModelForm, BaseTagFormSet
 
 
 """
