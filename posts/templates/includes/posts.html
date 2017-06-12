@@ -1,4 +1,15 @@
 {% load static %}
+
+{# For success messages from Update and Create Views #}
+{% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-success alert-dismissable" style="align: center">
+      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        {{ message }}
+      </div>
+    {% endfor %}
+{% endif %}
+
 {% for post in object_list %}
 <div class="row">
   <div class="col-xs-12">

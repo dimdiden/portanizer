@@ -1,3 +1,4 @@
+from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import render, redirect
 from django.db.models import Q
 from django.db.models import Count
@@ -54,11 +55,12 @@ class PostListView(LoginRequiredMixin, ListView):
         return queryset
 
 
-class CreatePostFormView(LoginRequiredMixin, CreateView):
+class CreatePostFormView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     model = Post
     fields = '__all__'
     template_name = 'post.html'
-    success_url = '/'
+    success_url = '/posts/'
+    success_message = "%(title)s was created successfully"
 
     def get_context_data(self, **kwargs):
         context = super(CreatePostFormView, self).get_context_data(**kwargs)
@@ -95,11 +97,12 @@ class CreatePostFormView(LoginRequiredMixin, CreateView):
             CreatePostFormView, self).post(self, request, *args, **kwargs)
 
 
-class UpdatePostFormView(LoginRequiredMixin, UpdateView):
+class UpdatePostFormView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     model = Post
     fields = '__all__'
     template_name = 'post.html'
-    success_url = '/'
+    success_url = '/posts/'
+    success_message = "%(title)s was updated successfully"
 
     def get_context_data(self, **kwargs):
         context = super(UpdatePostFormView, self).get_context_data(**kwargs)
