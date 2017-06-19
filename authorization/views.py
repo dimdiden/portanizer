@@ -27,8 +27,12 @@ except ModuleNotFoundError:
     pass
 
 
-from .forms import UserLoginForm, UserRegisterForm, PasswordResetRequestForm, SetPasswordForm
-
+from .forms import (
+    UserLoginForm,
+    UserRegisterForm,
+    PasswordResetRequestForm,
+    SetPasswordForm
+)
 
 User = get_user_model()
 
@@ -111,10 +115,10 @@ class ResetpwdView(FormView):
 
         form = self.form_class(request.POST)
         if form.is_valid():
-            data= form.cleaned_data["email_or_username"]
-        if self.validate_email_address(data) is True:    
-           
-            associated_users = User.objects.filter(Q(email=data)|Q(username=data))
+            data = form.cleaned_data["email_or_username"]
+        if self.validate_email_address(data) is True:
+
+            associated_users = User.objects.filter(Q(email=data) | Q(username=data))
             if associated_users.exists():
                 for user in associated_users:
                         c = {
@@ -126,9 +130,9 @@ class ResetpwdView(FormView):
                             'token': default_token_generator.make_token(user),
                             'protocol': 'http',
                         }
-                        subject_template_name = 'includes/password_reset_subject.txt' 
+                        subject_template_name = 'includes/password_reset_subject.txt'
                         # copied from django/contrib/admin/templates/registration/password_reset_subject.txt to templates directory
-                        email_template_name = 'includes/password_reset_email.html'    
+                        email_template_name = 'includes/password_reset_email.html'
                         # copied from django/contrib/admin/templates/registration/password_reset_email.html to templates directory
                         subject = loader.render_to_string(subject_template_name, c)
                         # Email subject *must not* contain newlines
