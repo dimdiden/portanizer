@@ -19,7 +19,13 @@ from django.db.models.query_utils import Q
 from django.views.generic import FormView, View
 from django.views.generic.edit import CreateView
 
-from portanizer.settings.local import DEFAULT_FROM_EMAIL
+from portanizer.settings.production import DEFAULT_FROM_EMAIL
+
+try:
+    from portanizer.settings.local import DEFAULT_FROM_EMAIL
+except ModuleNotFoundError:
+    pass
+
 
 from .forms import UserLoginForm, UserRegisterForm, PasswordResetRequestForm, SetPasswordForm
 
