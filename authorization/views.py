@@ -19,12 +19,10 @@ from django.db.models.query_utils import Q
 from django.views.generic import FormView, View
 from django.views.generic.edit import CreateView
 
-from portanizer.settings.production import DEFAULT_FROM_EMAIL
-
 try:
     from portanizer.settings.local import DEFAULT_FROM_EMAIL
 except ModuleNotFoundError:
-    pass
+    from portanizer.settings.production import DEFAULT_FROM_EMAIL
 
 
 from .forms import (
@@ -164,6 +162,7 @@ class ResetpwdView(FormView):
                     # Email subject *must not* contain newlines
                     subject = ''.join(subject.splitlines())
                     email = loader.render_to_string(email_template_name, c)
+                    # http://joequery.me/guides/python-smtp-authenticationerror/
                     send_mail(subject, email, DEFAULT_FROM_EMAIL, [user.email], fail_silently=False)
                 result = self.form_valid(form)
                 messages.success(request, 'Email has been sent to ' + data +"'s email address. Please check its inbox to continue reseting password.")
