@@ -5,8 +5,7 @@
 <div class="row bottom-buffer">
   <div class="col-xs-12">
     <div class="btn-group" role="group">
-      <a class="btn btn-xs btn-primary" href="{% url 'authorization:register' %}">Register page</a>
-      <a class="btn btn-xs btn-primary" href="{% url 'authorization:resetpwd' %}">Restore password</a>
+      <a class="btn btn-xs btn-primary" href="{% url 'authorization:login' %}">Back to login page</a>
     </div>
   </div>
 </div>
@@ -18,5 +17,6 @@
       </div>
     {% endfor %}
 {% endif %}
+    
   {% include "includes/form.html" %}
 {% endblock content %}

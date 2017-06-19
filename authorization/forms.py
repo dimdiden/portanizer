@@ -36,9 +36,10 @@ class UserLoginForm(forms.Form):
 class UserRegisterForm(forms.ModelForm):
     username = forms.CharField(label='Username:')
     email = forms.EmailField(label='Email address:')
-    # email2 = forms.EmailField(label='Confirm Email:')
-    password = forms.CharField(widget=forms.PasswordInput, label='Password:')
-    password2 = forms.CharField(widget=forms.PasswordInput, label='Confirm Password:')
+    password = forms.CharField(
+        widget=forms.PasswordInput, label='Password:')
+    password2 = forms.CharField(
+        widget=forms.PasswordInput, label='Confirm Password:')
 
     class Meta:
         model = User
@@ -59,3 +60,36 @@ class UserRegisterForm(forms.ModelForm):
             raise forms.ValidationError("Passwords must match")
 
         return super(UserRegisterForm, self).clean(*args, **kwargs)
+
+
+class PasswordResetRequestForm(forms.Form):
+    email_or_username = forms.CharField(label=("Email Or Username"), max_length=254)
+
+
+class SetPasswordForm(forms.Form):
+
+    error_messages = {
+        'password_mismatch': ("The two password fields didn't match."),
+        'password_length': ("Passwords must contain not less than 6 characters"),
+    }
+    password = forms.CharField(label=(
+        "New password"), widget=forms.PasswordInput)
+    password2 = forms.CharField(label=(
+        "New password confirmation"), widget=forms.PasswordInput)
+
+    def clean_password2(self):
+        password = self.cleaned_data.get('password')
+        password2 = self.cleaned_data.get('password2')
+        if len(password) <= 6:
+            raise forms.ValidationError(
+                self.error_messages['password_length'],
+                code='password_length',
+            )
+
+        if password and password2:
+            if password != password2:
+                raise forms.ValidationError(
+                    self.error_messages['password_mismatch'],
+                    code='password_mismatch',
+                )
+        return password2
