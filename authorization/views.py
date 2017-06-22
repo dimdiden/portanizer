@@ -37,7 +37,8 @@ User = get_user_model()
 
 class UserLoginView(FormView):
     form_class = UserLoginForm
-    template_name = "login.html"
+    # template_name = "login.html"
+    template_name = "auth_form.html"
 
     def form_valid(self, form):
         username = form.cleaned_data.get("username")
@@ -61,7 +62,8 @@ class UserLoginView(FormView):
 class UserRegisterView(CreateView):
     model = User
     form_class = UserRegisterForm
-    template_name = "register.html"
+    # template_name = "register.html"
+    template_name = "auth_form.html"
     success_url = "/"
 
     def get_context_data(self, **kwargs):
@@ -86,7 +88,8 @@ class LogoutView(View):
 
 
 class ResetpwdView(FormView):
-    template_name = "resetpwd.html"
+    # template_name = "resetpwd.html"
+    template_name = "auth_form.html"
     success_url = '/authorization/login'
     form_class = PasswordResetRequestForm
 
@@ -175,7 +178,7 @@ class ResetpwdView(FormView):
 
 
 class ResetpwdConfirmView(FormView):
-    template_name = "resetpwd_confirm.html"
+    template_name = "auth_form.html"
     success_url = '/authorization/login'
     form_class = SetPasswordForm
 
@@ -188,7 +191,7 @@ class ResetpwdConfirmView(FormView):
 
         UserModel = get_user_model()
         form = self.form_class(request.POST)
-        assert uidb64 is not None and token is not None 
+        assert uidb64 is not None and token is not None
         try:
             uid = urlsafe_base64_decode(uidb64)
             user = UserModel._default_manager.get(pk=uid)
@@ -197,7 +200,7 @@ class ResetpwdConfirmView(FormView):
 
         if user is not None and default_token_generator.check_token(user, token):
             if form.is_valid():
-                new_password= form.cleaned_data['password2']
+                new_password = form.cleaned_data['password2']
                 user.set_password(new_password)
                 user.save()
                 messages.success(request, 'Password has been reset.')
@@ -206,5 +209,5 @@ class ResetpwdConfirmView(FormView):
                 messages.error(request, 'Password reset has not been unsuccessful.')
                 return self.form_invalid(form)
         else:
-            messages.error(request,'The reset password link is no longer valid.')
+            messages.error(request, 'The reset password link is no longer valid.')
             return self.form_invalid(form)

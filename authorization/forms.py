@@ -10,8 +10,10 @@ User = get_user_model()
 
 
 class UserLoginForm(forms.Form):
-    username = forms.CharField(label='Username:')
-    password = forms.CharField(widget=forms.PasswordInput, label='Password:')
+    username = forms.CharField(widget=forms.TextInput(
+        attrs={'placeholder': 'Enter username'}), label='Username:')
+    password = forms.CharField(widget=forms.PasswordInput(
+        attrs={'placeholder': 'Enter password'}), label='Password:')
 
     def clean(self, *args, **kwargs):
         username = self.cleaned_data.get("username")
@@ -34,12 +36,14 @@ class UserLoginForm(forms.Form):
 
 
 class UserRegisterForm(forms.ModelForm):
-    username = forms.CharField(label='Username:')
-    email = forms.EmailField(label='Email address:')
-    password = forms.CharField(
-        widget=forms.PasswordInput, label='Password:')
-    password2 = forms.CharField(
-        widget=forms.PasswordInput, label='Confirm Password:')
+    username = forms.CharField(widget=forms.TextInput(
+        attrs={'placeholder': 'Enter username'}), label='Username:')
+    email = forms.EmailField(widget=forms.TextInput(
+        attrs={'placeholder': 'Enter email'}), label='Email address:')
+    password = forms.CharField(widget=forms.PasswordInput(
+        attrs={'placeholder': 'Enter password'}), label='Password:')
+    password2 = forms.CharField(widget=forms.PasswordInput(
+        attrs={'placeholder': 'Enter the same password'}), label='Confirm Password:')
 
     class Meta:
         model = User
@@ -63,7 +67,8 @@ class UserRegisterForm(forms.ModelForm):
 
 
 class PasswordResetRequestForm(forms.Form):
-    email_or_username = forms.CharField(label=("Email Or Username"), max_length=254)
+    email_or_username = forms.CharField(widget=forms.TextInput(
+        attrs={'placeholder': 'Enter your email or username'}), label=("Email Or Username"))
 
 
 class SetPasswordForm(forms.Form):
@@ -72,10 +77,10 @@ class SetPasswordForm(forms.Form):
         'password_mismatch': ("The two password fields didn't match."),
         'password_length': ("Passwords must contain not less than 6 characters"),
     }
-    password = forms.CharField(label=(
-        "New password"), widget=forms.PasswordInput)
-    password2 = forms.CharField(label=(
-        "New password confirmation"), widget=forms.PasswordInput)
+    password = forms.CharField(widget=forms.PasswordInput(
+        attrs={'placeholder': 'Enter password'}), label='New password:')
+    password2 = forms.CharField(widget=forms.PasswordInput(
+        attrs={'placeholder': 'Enter the same password'}), label='New password confirmation:')
 
     def clean_password2(self):
         password = self.cleaned_data.get('password')

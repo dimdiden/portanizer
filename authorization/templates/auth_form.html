@@ -1,0 +1,46 @@
+{% extends "base_auth.html" %}
+{% load widget_tweaks %}
+
+{% block content %}
+{% url 'authorization:login' as login_url %}
+
+{% if messages %}
+  {% for message in messages %}
+    <div class="alert alert-success alert-dismissable" style="align: center">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+      {{ message }}
+    </div>
+  {% endfor %}
+{% endif %}
+
+<div class="row">
+  <div class="col-xs-12">
+  {{ form.non_field_errors }}
+  
+    <form action ="" method = "post" novalidate>{% csrf_token %}
+      {% for field in form %}
+        <div class="row form-group">
+          <div class="col-xs-12">
+            <label for="{{ field.id_for_label }}">{{field.label}} </label>
+            {% render_field field class="form-control" %}
+            {{ field.errors }}
+          </div>
+        </div>
+      {% endfor %}
+
+      <p><button type="submit" class="btn btn-success btn-block"><b>{{title}}</b></button></p>
+    </form>
+  </div>
+
+  {% if request.path == login_url %}
+    <p align="center">
+      <a href="{% url 'authorization:register' %}">Create Account</a>
+        or
+      <a href="{% url 'authorization:resetpwd' %}">Reset password</a>
+    </p>
+  {% else %}
+    <p align="center"><a href="{% url 'authorization:login' %}">To login page</a></p>
+  {% endif %}  
+</div>
+
+{% endblock content %}

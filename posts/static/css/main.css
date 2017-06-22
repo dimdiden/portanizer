@@ -29,7 +29,7 @@ body {
 }
 /*To display register form with less width*/
 .login-sm {
-    width:50%;
+    width:40%;
     margin: 0 auto;
 }
 .errorlist {
