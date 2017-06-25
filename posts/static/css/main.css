@@ -51,3 +51,9 @@ body {
     width: 15px;
     height: 15px;
 }
+
+.scrollable-menu {
+    height: auto;
+    max-height: 600px;
+    overflow-x: hidden;
+}
