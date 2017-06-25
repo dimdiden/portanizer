@@ -29,7 +29,7 @@ body {
 }
 /*To display register form with less width*/
 .login-sm {
-    width:50%;
+    width:40%;
     margin: 0 auto;
 }
 .errorlist {
@@ -37,6 +37,24 @@ body {
 }
 /*Add margin to columns*/
 /*https://coderwall.com/p/0jezca/vertical-spacing-for-bootstrap-columns*/
-.col-add-mrg {
+/*.col-add-mrg {
     margin-bottom: 8px;
+}*/
+/*.blue {
+    color: #428bca;
+}*/
+
+.bottom-buffer { 
+    margin-bottom:8px;
+}
+.big-checkbox {
+    width: 15px;
+    height: 15px;
+}
+
+/*https://stackoverflow.com/questions/19227496/scrollable-menu-with-bootstrap-3-menu-expanding-its-container-when-it-should-n*/
+.scrollable-menu {
+    height: auto;
+    max-height: 600px;
+    overflow-x: hidden;
 }
