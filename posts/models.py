@@ -1,13 +1,10 @@
 from django.urls import reverse
 from django.db import models
-
-"""
-https://docs.djangoproject.com/en/1.11/topics/db/models/#fields
-The default HTML widget to use when rendering a form field (e.g. <input type="text">, <select>).
-"""
+from django.contrib.auth.models import User
 
 
 class Post(models.Model):
+    user = models.ForeignKey(User)
     title = models.CharField(max_length=50)
     body = models.TextField()
     tag = models.ManyToManyField('Tag', blank=True)
@@ -20,7 +17,8 @@ class Post(models.Model):
 
 
 class Tag(models.Model):
-    name = models.CharField(max_length=50, unique=True)
+    user = models.ForeignKey(User)
+    name = models.CharField(max_length=50)
 
     def __str__(self):
         return self.name

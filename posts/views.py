@@ -15,13 +15,7 @@ from django.views.generic import (
 )
 
 from .models import Post, Tag
-from .forms import TagModelForm, BaseTagFormSet
-
-
-"""
-Django: Search form in Class Based ListView
-http://stackoverflow.com/questions/13416502/django-search-form-in-class-based-listview
-"""
+from .forms import TagModelForm, PostModelForm, custom_tag_base_modelformset
 
 
 class PostListView(LoginRequiredMixin, ListView):
@@ -29,7 +23,7 @@ class PostListView(LoginRequiredMixin, ListView):
     template_name = 'index.html'
 
     def get_queryset(self):
-        queryset = super(PostListView, self).get_queryset()
+        queryset = Post.objects.filter(user=self.request.user)
 
         tags = self.request.GET.getlist('select_tag')
         condition = self.request.GET.get('condition')
@@ -52,13 +46,12 @@ class PostListView(LoginRequiredMixin, ListView):
 
             # return posts matched any of tags
             return queryset.filter(tag__in=tags).distinct()
-
         return queryset
 
 
 class CreatePostFormView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     model = Post
-    fields = '__all__'
+    form_class = PostModelForm
     template_name = 'post.html'
     success_url = '/posts/'
     success_message = "%(title)s was created successfully"
@@ -66,7 +59,7 @@ class CreatePostFormView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super(CreatePostFormView, self).get_context_data(**kwargs)
 
-        context['formNewTag'] = TagModelForm()
+        context['formNewTag'] = TagModelForm(self.request.user)
 
         # if formNewTag in kwargs - replace existed
         context.update(kwargs)
@@ -76,17 +69,19 @@ class CreatePostFormView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
         # to overcome the issue has no attribute 'object'
         self.object = None
 
-        formTag = TagModelForm(request.POST)
+        formTag = TagModelForm(request.user, request.POST)
 
         # Separate processes for two forms based on name html attribute
         if 'tag_submit' in request.POST:
             if formTag.is_valid():
-                formTag.save()
+                new_tag = formTag.save(commit=False)
+                new_tag.user = self.request.user
+                new_tag.save()
+
                 return render(
                     request,
                     self.template_name,
                     self.get_context_data())
-            # elif request.POST.get('name'):
             else:
                 return render(
                     request,
@@ -97,10 +92,21 @@ class CreatePostFormView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
         return super(
             CreatePostFormView, self).post(self, request, *args, **kwargs)
 
+    def get_form_kwargs(self):
+        kwargs = super(CreatePostFormView, self).get_form_kwargs()
+        kwargs.update({'request': self.request})
+        return kwargs
+
+    def form_valid(self, form):
+        instance = form.save(commit=False)
+        instance.user = self.request.user
+        self.object = instance
+        return super(CreatePostFormView, self).form_valid(form)
+
 
 class UpdatePostFormView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     model = Post
-    fields = '__all__'
+    form_class = PostModelForm
     template_name = 'post.html'
     success_url = '/posts/'
     success_message = "%(title)s was updated successfully"
@@ -111,7 +117,7 @@ class UpdatePostFormView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
         # to get the pk's
         context.update(self.kwargs)
 
-        context['formNewTag'] = TagModelForm()
+        context['formNewTag'] = TagModelForm(self.request.user)
 
         # if formNewTag in kwargs - replace existed
         context.update(kwargs)
@@ -120,17 +126,19 @@ class UpdatePostFormView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
 
-        formTag = TagModelForm(request.POST)
+        formTag = TagModelForm(request.user, request.POST)
 
         # Separate processes for two forms based on name html attribute
         if 'tag_submit' in request.POST:
             if formTag.is_valid():
-                formTag.save()
+                new_tag = formTag.save(commit=False)
+                new_tag.user = self.request.user
+                new_tag.save()
+
                 return render(
                     request,
                     self.template_name,
                     self.get_context_data())
-            # elif request.POST.get('name'):
             else:
                 return render(
                     request,
@@ -140,6 +148,17 @@ class UpdatePostFormView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
         # Return the standard post method if the New tag is not specified
         return super(
             UpdatePostFormView, self).post(self, request, *args, **kwargs)
+
+    def get_form_kwargs(self):
+        kwargs = super(UpdatePostFormView, self).get_form_kwargs()
+        kwargs.update({'request': self.request})
+        return kwargs
+
+    def form_valid(self, form):
+        instance = form.save(commit=False)
+        instance.user = self.request.user
+        self.object = instance
+        return super(UpdatePostFormView, self).form_valid(form)
 
 
 class DeletePostView(LoginRequiredMixin, DeleteView):
@@ -165,26 +184,45 @@ class TagManagerView(LoginRequiredMixin, TemplateView):
         return context
 
     def get(self, request, *args, **kwargs):
+        queryset = Tag.objects.filter(user=self.request.user).order_by('-name')
+
+        formset = custom_tag_base_modelformset(request.user)
+
+        # https://djangosnippets.org/snippets/2552/
+        # https://stackoverflow.com/questions/622982/django-passing-custom-form-parameters-to-formset/25766319#25766319
         TagFormSet = modelformset_factory(
             Tag,
-            fields='__all__',
-            formset=BaseTagFormSet,
+            formset=formset,
+            fields=('name',),
             can_delete=True)
-        print(TagFormSet().total_form_count())
+
+        formset = TagFormSet(queryset=queryset)
         return self.render_to_response(self.get_context_data(
-            formset=TagFormSet()))
+            formset=formset))
 
     def post(self, request, *args, **kwargs):
+        # https://stackoverflow.com/questions/34214547/modifying-a-inline-formset-before-it-is-saved
+
+        formset = custom_tag_base_modelformset(request.user)
+
         TagFormSet = modelformset_factory(
             Tag,
-            fields='__all__',
-            formset=BaseTagFormSet,
+            formset=formset,
+            fields=('name',),
             can_delete=True)
 
         formset = TagFormSet(request.POST)
 
         if formset.is_valid():
-            formset.save()
+            instances = formset.save(commit=False)
+            for instance in instances:
+                instance.user = self.request.user
+                # you’ll also need to call formset.save_m2m()
+                # to ensure the many-to-many relationships are saved properly.
+                instance.save()
+
+            for instance in formset.deleted_objects:
+                instance.delete()
             return redirect('posts:tagmanager')
         else:
             return self.render_to_response(self.get_context_data(
