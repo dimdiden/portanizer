@@ -25,7 +25,7 @@ class PostListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         queryset = Post.objects.filter(user=self.request.user)
 
-        tags = self.request.GET.getlist('select_tag')
+        tags = self.request.GET.getlist('tag')
         condition = self.request.GET.get('condition')
         unassigned = self.request.GET.get('show_unassigned')
 
@@ -35,17 +35,17 @@ class PostListView(LoginRequiredMixin, ListView):
 
         if unassigned and tags:
             return queryset.filter(
-                Q(tag__isnull=True) | Q(tag__in=tags)).distinct()
+                Q(tag__isnull=True) | Q(tag__name__in=tags)).distinct()
         elif unassigned:
             return queryset.filter(tag__isnull=True)
         elif tags:
             if condition:
                 # return posts which include all tags
-                return queryset.filter(tag__in=tags).annotate(
+                return queryset.filter(tag__name__in=tags).annotate(
                     matched_tags=Count('tag')).filter(matched_tags=len(tags))
 
             # return posts matched any of tags
-            return queryset.filter(tag__in=tags).distinct()
+            return queryset.filter(tag__name__in=tags).distinct()
         return queryset
 
 

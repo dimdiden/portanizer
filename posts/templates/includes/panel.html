@@ -14,7 +14,7 @@
           <span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> UNASSIGNED
         </label>
       </li> 
-      {% for checkbox in formMultyTag.select_tag %}
+      {% for checkbox in formMultyTag.tag %}
       <li>
           {{ checkbox.tag }}
           <label for="{{ checkbox.id_for_label }}">{{ checkbox.choice_label }}</label>

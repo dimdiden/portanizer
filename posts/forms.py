@@ -35,9 +35,10 @@ class TagMultiplyForm(forms.Form):
         user = kwargs.pop('user')
         super(TagMultiplyForm, self).__init__(*args, **kwargs)
 
-        self.fields['select_tag'] = forms.ModelMultipleChoiceField(
+        self.fields['tag'] = forms.ModelMultipleChoiceField(
             widget=forms.CheckboxSelectMultiple,
-            queryset=Tag.objects.filter(user=user).order_by('name')
+            queryset=Tag.objects.filter(user=user).order_by('name'),
+            to_field_name="name"
         )
 
 
