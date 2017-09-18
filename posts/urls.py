@@ -7,6 +7,8 @@ from .views import (
     DeletePostView,
 )
 
+from .viewsets import PostListViewSet
+
 urlpatterns = [
     url(r'^$',
         PostListView.as_view(), name='index'),
@@ -18,4 +20,6 @@ urlpatterns = [
         DeletePostView.as_view(), name='delete'),
     url(r'^tagmanager/$',
         TagManagerView.as_view(), name='tagmanager'),
+    url(r'^api/$',
+        PostListViewSet.as_view(), name='post_api'),
 ]
