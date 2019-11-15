@@ -9,25 +9,25 @@ BASE_DIR = os.path.dirname(
         os.path.dirname(os.path.abspath(__file__))))
 
 # JSON-based secrets module
-filename = os.path.join(BASE_DIR, 'secrets.json')
+# filename = os.path.join(BASE_DIR, 'secrets.json')
 
-with open(filename) as f:
-    secrets = json.loads(f.read())
+# with open(filename) as f:
+#     secrets = json.loads(f.read())
 
 
-def get_secret(setting, secrets=secrets):
-    try:
-        return secrets[setting]
-    except KeyError:
-        error_msg = "Set the %s environment variable" % setting
-        raise ImproperlyConfigured(error_msg)
+# def get_secret(setting, secrets=secrets):
+#     try:
+#         return secrets[setting]
+#     except KeyError:
+#         error_msg = "Set the %s environment variable" % setting
+#         raise ImproperlyConfigured(error_msg)
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = get_secret("SECRET_KEY")
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -40,12 +40,12 @@ Usage: send_mail('Subject here', 'Here is the message.','dimdiden@gmail.com', ['
 """
 
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = get_secret("DEFAULT_FROM_EMAIL")
+DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL")
 # SERVER_EMAIL = 'test@gmail.com'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = get_secret("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = get_secret("EMAIL_HOST_PASSWORD")
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 # Application definition
