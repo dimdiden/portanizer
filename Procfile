@@ -1,1 +1,0 @@
-web: gunicorn portanizer.wsgi --log-file -
