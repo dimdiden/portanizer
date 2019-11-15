@@ -7,3 +7,4 @@ db_dumps
 *.dump
 secrets.json
 .vscode
+portanizer_db.json
