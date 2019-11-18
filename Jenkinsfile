@@ -18,12 +18,12 @@ pipeline {
     stages {
         stage('build') {
             steps {
+                sh "cp ${JENKINS_HOME}/.env ."
                 sh "docker-compose -f docker-compose-prod.yml build"
             }
         }
         stage('deploy') {
             steps {
-                sh "cp ${JENKINS_HOME}/.env ."
                 sh "docker-compose -f docker-compose-prod.yml down"
                 sh "docker-compose -f docker-compose-prod.yml up -d"
             }
