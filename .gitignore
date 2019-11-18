@@ -9,3 +9,4 @@ secrets.json
 .vscode
 portanizer_db.json
 letsencrypt
+staticfiles
