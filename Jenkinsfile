@@ -18,7 +18,6 @@ pipeline {
     stages {
         stage('build') {
             steps {
-                sh "cp ${JENKINS_HOME}/.env ."
                 sh "docker-compose -f docker-compose-prod.yml build"
             }
         }
