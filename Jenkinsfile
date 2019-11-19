@@ -17,7 +17,9 @@ pipeline {
     // all pipeline stages
     stages {
         stage('test') {
-            echo "Just test"
+            steps {
+                echo "Just test"
+            }
         }
         // stage('build') {
         //     steps {
