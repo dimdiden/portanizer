@@ -50,7 +50,7 @@ ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
 
 # Email section
 """
-Usage: send_mail('Subject here', 'Here is the message.','dimdiden@gmail.com', ['dimdiden@gmail.com'], fail_silently=False,)
+Usage: send_mail('Subject here', 'Here is the message.','example@example.com', ['example@example.com'], fail_silently=False,)
 """
 
 EMAIL_USE_TLS = True
