@@ -19,7 +19,7 @@ from django.db.models.query_utils import Q
 from django.views.generic import FormView, View
 from django.views.generic.edit import CreateView
 
-from portanizer.settings import DEFAULT_FROM_EMAIL
+from portanizer.settings import DEFAULT_FROM_EMAIL, ALLOWED_HOSTS
 
 
 from .forms import (
@@ -122,7 +122,7 @@ class ResetpwdView(FormView):
                         c = {
                             'email': user.email,
                             'domain': request.META['HTTP_HOST'],
-                            'site_name': 'portanizer.com',
+                            'site_name': ALLOWED_HOSTS[0],
                             'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                             'user': user,
                             'token': default_token_generator.make_token(user),
@@ -150,7 +150,7 @@ class ResetpwdView(FormView):
                     c = {
                         'email': user.email,
                         'domain': request.META['HTTP_HOST'],
-                        'site_name': 'portanizer.com',
+                        'site_name': ALLOWED_HOSTS[0],
                         'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                         'user': user,
                         'token': default_token_generator.make_token(user),

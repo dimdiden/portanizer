@@ -1,0 +1,14 @@
+portanizer_db.json
+letsencrypt
+staticfiles
+posts_fixtures.json
+Jenkinsfile
+Dockerfile
+docker-compose*
+.env_local
+venv
+.vscode
+.git*
+.env
+.gitignore
+.dockerignore
