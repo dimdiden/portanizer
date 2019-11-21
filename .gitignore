@@ -10,3 +10,4 @@ secrets.json
 portanizer_db.json
 letsencrypt
 staticfiles
+.env_prod
