@@ -9,7 +9,7 @@ pipeline {
 
     options {
         ansiColor('xterm')
-        parallelsAlwaysFailFast()
+        // parallelsAlwaysFailFast()
         timestamps()
         buildDiscarder(logRotator(numToKeepStr: '10'))
     }
@@ -21,22 +21,32 @@ pipeline {
                 echo "Just test"
             }
         }
-        // stage('build') {
-        //     steps {
-        //         sh "docker-compose -f docker-compose-prod.yml build"
-        //     }
-        // }
-        // stage('deploy') {
-        //     steps {
-        //         sh "docker-compose -f docker-compose-prod.yml down"
-        //         sh "docker-compose -f docker-compose-prod.yml up -d"
-        //     }
-        // }
-        // stage('smoke-tests') {
-        //     steps {
-        //         // ensure the num of services is 3
-        //         sh "docker ps -q | wc -l | grep 3"
-        //     }
-        // }
+        stage('build') {
+            steps {
+                sh "docker build --tag portanizer_web ."
+            }
+        }
+        stage('deploy') {
+            steps {
+                sh "docker stack deploy -c docker-compose-swarm.yml portanizer"
+            }
+            post {
+                success {
+                    sh "docker container prune"
+                }
+            }
+        }
+        stage('smoke-tests') {
+            steps {
+                // ensure the num of services is 3
+                sh "docker ps -q | wc -l | grep 3"
+            }
+        }
+    }
+    post {
+        always {
+            cleanWs()
+            sh "docker system prune"
+        }
     }
 }
