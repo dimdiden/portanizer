@@ -3,7 +3,7 @@ version: '3.3'
 services:
   web:
     image: portanizer_web:latest
-    # entrypoint: ./entrypoint-prod.sh
+    entrypoint: ./entrypoint-prod.sh
     command: gunicorn --workers 2 --threads=4 --worker-tmp-dir /dev/shm --log-level info --log-file=- portanizer.wsgi:application --bind 0.0.0.0:8000
     networks:
       - default
