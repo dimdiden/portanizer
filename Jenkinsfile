@@ -16,11 +16,6 @@ pipeline {
 
     // all pipeline stages
     stages {
-        stage('test') {
-            steps {
-                echo "Just test"
-            }
-        }
         stage('build') {
             steps {
                 sh "docker build --tag portanizer_web ."
@@ -28,7 +23,12 @@ pipeline {
         }
         stage('deploy') {
             steps {
-                sh "docker stack deploy -c docker-compose-swarm.yml portanizer"
+                script {
+                    withCredentials([file(credentialsId: 'portanizer-env-file', variable: 'envFile')]) {
+                        sh "cp ${envFile} ."
+                    }
+                    sh "docker stack deploy -c docker-compose-swarm.yml portanizer"
+                }
             }
             post {
                 success {
@@ -36,12 +36,12 @@ pipeline {
                 }
             }
         }
-        stage('smoke-tests') {
-            steps {
-                // ensure the num of services is 3
-                sh "docker ps -q | wc -l | grep 3"
-            }
-        }
+        // stage('smoke-tests') {
+        //     steps {
+        //         // ensure the num of services is 3
+        //         sh "docker ps -q | wc -l | grep 3"
+        //     }
+        // }
     }
     post {
         always {
