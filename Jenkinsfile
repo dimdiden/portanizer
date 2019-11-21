@@ -25,7 +25,7 @@ pipeline {
             steps {
                 script {
                     withCredentials([file(credentialsId: 'portanizer-env-file', variable: 'envFile')]) {
-                        sh "cp ${envFile} ."
+                        sh "cp ${envFile} .env"
                     }
                     sh "docker stack deploy -c docker-compose-swarm.yml portanizer"
                 }
