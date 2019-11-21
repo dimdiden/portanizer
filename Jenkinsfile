@@ -16,8 +16,9 @@ pipeline {
 
     environment {
         DOMAIN = 'dedu.tk'
-        POSTGRES_USER = 'portanizer'
-        POSTGRES_PASSWORD = credentials('portanizer-postgres-password')
+        POSTGRES_CREDS = credentials('portanizer-postgres-creds')
+        POSTGRES_USER = "${POSTGRES_CREDS_USR}"
+        POSTGRES_PASSWORD = "${POSTGRES_CREDS_PSW}"
         POSTGRES_DB = 'portanizer'
     }
 
@@ -29,9 +30,6 @@ pipeline {
             }
         }
         stage('deploy') {
-            environment {
-
-            }
             steps {
                 script {
                     withCredentials([file(credentialsId: 'portanizer-env-file', variable: 'envFile')]) {
