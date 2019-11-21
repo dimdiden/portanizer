@@ -38,23 +38,12 @@ pipeline {
                     sh "docker stack deploy -c docker-compose-swarm.yml portanizer"
                 }
             }
-            post {
-                success {
-                    sh "docker container prune"
-                }
-            }
         }
-        // stage('smoke-tests') {
-        //     steps {
-        //         // ensure the num of services is 3
-        //         sh "docker ps -q | wc -l | grep 3"
-        //     }
-        // }
     }
     post {
         always {
             cleanWs()
-            sh "docker system prune"
+            sh "docker system prune -f"
         }
     }
 }
