@@ -14,6 +14,13 @@ pipeline {
         buildDiscarder(logRotator(numToKeepStr: '10'))
     }
 
+    environment {
+        DOMAIN = 'dedu.tk'
+        POSTGRES_USER = 'portanizer'
+        POSTGRES_PASSWORD = credentials('portanizer-postgres-password')
+        POSTGRES_DB = 'portanizer'
+    }
+
     // all pipeline stages
     stages {
         stage('build') {
@@ -22,6 +29,9 @@ pipeline {
             }
         }
         stage('deploy') {
+            environment {
+
+            }
             steps {
                 script {
                     withCredentials([file(credentialsId: 'portanizer-env-file', variable: 'envFile')]) {
