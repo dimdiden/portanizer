@@ -25,11 +25,17 @@ pipeline {
     // all pipeline stages
     stages {
         stage('build') {
+            when {
+                branch 'master'
+            }
             steps {
                 sh "docker build --tag portanizer_web ."
             }
         }
         stage('deploy') {
+            when {
+                branch 'master'
+            }
             steps {
                 script {
                     withCredentials([file(credentialsId: 'portanizer-env-file', variable: 'envFile')]) {
