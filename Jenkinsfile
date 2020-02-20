@@ -18,7 +18,7 @@ pipeline {
 
     environment {
         REGISTRY = credentials('portanizer-registry')
-        DOCKER_HUB_CREDS = credentials('docker-hub-connector')
+        DOCKER_HUB_CREDS = 'docker-hub-connector'
         DOMAIN = 'dedu.tk'
         POSTGRES_CREDS = credentials('portanizer-postgres-creds')
         POSTGRES_USER = "${POSTGRES_CREDS_USR}"
