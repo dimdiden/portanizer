@@ -68,7 +68,7 @@ pipeline {
     post {
         always {
             cleanWs()
-            sh "docker rmi ${env.REGISTRY}:${env.BRANCH_NAME}-${env.BUILD_NUMBER}"
+            sh "docker system prune -f"
         }
     }
 }
