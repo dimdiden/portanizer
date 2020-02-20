@@ -24,7 +24,6 @@ pipeline {
         POSTGRES_USER = "${POSTGRES_CREDS_USR}"
         POSTGRES_PASSWORD = "${POSTGRES_CREDS_PSW}"
         POSTGRES_DB = 'portanizer'
-        DOCKER_IMAGE = ''
     }
 
     // all pipeline stages
@@ -38,10 +37,10 @@ pipeline {
             }
             steps {
                 script {
-                    env.DOCKER_IMAGE = docker.build "${env.REGISTRY}:${env.BRANCH_NAME}-${env.BUILD_NUMBER}"
+                    def dockerImage = docker.build "${env.REGISTRY}:${env.BRANCH_NAME}-${env.BUILD_NUMBER}"
 
                     docker.withRegistry( '', env.DOCKER_HUB_CREDS ) {
-                        env.DOCKER_IMAGE.push()
+                        dockerImage.push()
                     }
                 }
             }
