@@ -32,7 +32,7 @@ pipeline {
             when {
                 anyOf {
                     branch 'master'
-                    branch 'cicd'
+                    // branch 'cicd'
                 }
             }
             steps {
@@ -49,7 +49,7 @@ pipeline {
             when {
                 anyOf {
                     branch 'master'
-                    branch 'cicd'
+                    // branch 'cicd'
                 }
             }
             environment {
