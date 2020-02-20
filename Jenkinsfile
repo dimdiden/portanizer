@@ -38,7 +38,7 @@ pipeline {
             }
             steps {
                 script {
-                    env.DOCKER_IMAGE = docker.build env.REGISTRY + ":${env.BRANCH_NAME}-${env.BUILD_NUMBER}"
+                    env.DOCKER_IMAGE = docker.build "${env.REGISTRY}:${env.BRANCH_NAME}-${env.BUILD_NUMBER}"
 
                     docker.withRegistry( '', env.DOCKER_HUB_CREDS ) {
                         env.DOCKER_IMAGE.push()
@@ -49,13 +49,17 @@ pipeline {
         stage('deploy') {
             when {
                 branch 'master'
+                branch 'cicd'
+            }
+            environment {
+                IMAGE_TAG = "${env.REGISTRY}:${env.BRANCH_NAME}-${env.BUILD_NUMBER}"
             }
             steps {
                 script {
                     withCredentials([file(credentialsId: 'portanizer-env-file', variable: 'envFile')]) {
                         sh "cp ${envFile} ./.env"
                     }
-                    sh "docker stack deploy -c docker-compose-swarm.yml portanizer"
+                    sh "docker-compose -f docker-compose-prod.yml up -d"
                 }
             }
         }
@@ -63,7 +67,7 @@ pipeline {
     post {
         always {
             cleanWs()
-            // sh "docker system prune -f"
+            sh "docker rmi ${env.REGISTRY}:${env.BRANCH_NAME}-${env.BUILD_NUMBER}"
         }
     }
 }
