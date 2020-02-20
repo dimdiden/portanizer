@@ -47,8 +47,10 @@ pipeline {
         }
         stage('deploy') {
             when {
-                branch 'master'
-                branch 'cicd'
+                anyOf {
+                    branch 'master'
+                    branch 'cicd'
+                }
             }
             environment {
                 IMAGE_TAG = "${env.REGISTRY}:${env.BRANCH_NAME}-${env.BUILD_NUMBER}"
