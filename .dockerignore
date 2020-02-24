@@ -12,3 +12,6 @@ venv
 .env
 .gitignore
 .dockerignore
+traefik*
+db.sqlite3
+.env*
