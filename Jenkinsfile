@@ -1,11 +1,30 @@
 #!/usr/bin/env groovy
 
-// Main pipeline
 pipeline {
-
     agent {
-        node {
-            label 'VD-build-box'
+        kubernetes {
+            label 'kube-slave-python'
+            defaultContainer 'python'
+            yaml """
+apiVersion: "v1"
+kind: "Pod"
+metadata:
+  labels:
+    label: "kube-slave-python"
+spec:
+  containers:
+  - name: "python"
+    command:
+    - "cat"
+    image: "arm64v8/python"
+    imagePullPolicy: "IfNotPresent"
+    tty: true
+    workingDir: "/home/jenkins/agent"
+  - name: "jnlp"
+    image: "dimdiden/jenkins-slave:jdk11"
+    tty: true
+    workingDir: "/home/jenkins/agent"
+"""
         }
     }
 
@@ -16,59 +35,11 @@ pipeline {
         buildDiscarder(logRotator(numToKeepStr: '10'))
     }
 
-    environment {
-        REGISTRY = credentials('portanizer-registry')
-        DOCKER_HUB_CREDS = 'docker-hub-connector'
-        DOMAIN = 'dedu.tk'
-        POSTGRES_CREDS = credentials('portanizer-postgres-creds')
-        POSTGRES_USER = "${POSTGRES_CREDS_USR}"
-        POSTGRES_PASSWORD = "${POSTGRES_CREDS_PSW}"
-        POSTGRES_DB = 'portanizer'
-    }
-
-    // all pipeline stages
     stages {
-        stage('build&push') {
-            when {
-                anyOf {
-                    branch 'master'
-                    // branch 'cicd'
-                }
-            }
+        stage('Checkout') {
             steps {
-                script {
-                    def dockerImage = docker.build "${env.REGISTRY}:${env.BRANCH_NAME}-${env.BUILD_NUMBER}"
-
-                    docker.withRegistry( '', env.DOCKER_HUB_CREDS ) {
-                        dockerImage.push()
-                    }
-                }
+                sh "ls -la"
             }
-        }
-        stage('deploy') {
-            when {
-                anyOf {
-                    branch 'master'
-                    // branch 'cicd'
-                }
-            }
-            environment {
-                IMAGE_TAG = "${env.REGISTRY}:${env.BRANCH_NAME}-${env.BUILD_NUMBER}"
-            }
-            steps {
-                script {
-                    withCredentials([file(credentialsId: 'portanizer-env-file', variable: 'envFile')]) {
-                        sh "cp ${envFile} ./.env"
-                    }
-                    sh "docker-compose -f docker-compose-prod.yml up -d"
-                }
-            }
-        }
-    }
-    post {
-        always {
-            cleanWs()
-            sh "docker system prune -f"
         }
     }
 }
