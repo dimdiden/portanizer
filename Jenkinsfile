@@ -5,6 +5,7 @@ pipeline {
         kubernetes {
             label 'kube-slave-python'
             defaultContainer 'python'
+            slaveConnectTimeout 200
             yaml """
 apiVersion: "v1"
 kind: "Pod"
