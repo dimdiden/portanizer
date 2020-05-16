@@ -6,7 +6,7 @@ pipeline {
             label 'kube-slave-python'
             defaultContainer 'python'
             slaveConnectTimeout 200
-            yamlFile 'build.yaml'
+            yamlFile 'build.yml'
         }
     }
 
