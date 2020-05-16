@@ -13,6 +13,8 @@ metadata:
   labels:
     label: "kube-slave-python"
 spec:
+  nodeSelector:
+    node-role.kubernetes.io/master: ""
   containers:
   - name: "python"
     image: "arm64v8/python"
