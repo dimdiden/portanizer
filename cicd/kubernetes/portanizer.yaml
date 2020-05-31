@@ -30,7 +30,7 @@ spec:
     spec:
       containers:
         - name: portanizer
-          image: dimdiden/portanizer-arm
+          image: %_PORTANIZER_IMAGE_%
           command: ["./entrypoint-prod.sh", "gunicorn"]
           args: ["--workers", "2", "--threads=4", "--worker-tmp-dir", "/dev/shm", "--log-level", "info", "--log-file=-", "portanizer.wsgi:application", "--bind", "0.0.0.0:9000"]
           ports:

@@ -21,6 +21,11 @@ pipeline {
         string(name: 'VERSION', defaultValue: 'latest', description: 'Version of the docker image')
     }
 
+    environment {
+        REGISTRY = "dimdiden/portanizer-arm"
+        DOCKER_HUB_CREDS = 'docker-hub-connector'
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -32,6 +37,7 @@ pipeline {
                 container('kubectl') {
                     script {
                         sh "ls -la"
+                        sh "sed -i -e 's/%_PORTANIZER_IMAGE_%/${env.REGISTRY}:${params.VERSION}/g'""
                         sh "kubectl apply -f cicd/kubernetes"
                     }
                 }

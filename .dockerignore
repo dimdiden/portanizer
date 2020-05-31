@@ -12,3 +12,4 @@ venv
 .env
 .gitignore
 .dockerignore
+cicd
