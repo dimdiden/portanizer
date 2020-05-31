@@ -1,0 +1,70 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: portanizer
+  labels:
+    app: portanizer
+  namespace: internal-apps
+spec:
+  ports:
+    - port: 9000
+
+  selector:
+    app: portanizer
+        
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: portanizer
+  namespace: internal-apps
+spec:
+  selector:
+    matchLabels:
+      app: portanizer
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: portanizer
+    spec:
+      containers:
+        - name: portanizer
+          image: dimdiden/portanizer-arm
+          command: ["./entrypoint-prod.sh", "gunicorn"]
+          args: ["--workers", "2", "--threads=4", "--worker-tmp-dir", "/dev/shm", "--log-level", "info", "--log-file=-", "portanizer.wsgi:application", "--bind", "0.0.0.0:9000"]
+          ports:
+            - name: http-port
+              containerPort: 9000
+          envFrom:
+            - configMapRef:
+                name: portanizer-config
+            - secretRef:
+                name: portanizer-secret   
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: portanizer-config
+  namespace: internal-apps
+data:
+  # DEBUG: "1"
+  LOGLEVEL: debug
+  DJANGO_ALLOWED_HOSTS: portanizer.dimdiden.ml portanizer.internal.dimdiden.ml
+
+  DB_ENGINE: django.db.backends.postgresql_psycopg2
+  DATABASE: portanizer
+  DB_USER: portanizer
+  DB_NAME: portanizer
+  DB_HOST: portanizer-data
+  DB_PORT: "5432"
+  HTTP_PORT: "9000"
+
+  DEFAULT_FROM_EMAIL: example@example.com
+  # SERVER_EMAIL = 'test@gmail.com'
+  EMAIL_HOST_USER: example@example.com
+  EMAIL_HOST_PASSWORD: example
+
+  PROJECT_DOMAIN: portanizer.localhost
+
