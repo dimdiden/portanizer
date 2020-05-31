@@ -8,11 +8,6 @@ spec:
   nodeSelector:
     node-role.kubernetes.io/master: ""
   containers:
-  - name: python
-    image: arm64v8/python
-    command: ['cat']
-    tty: true
-    workingDir: /home/jenkins/agent
   - name: jnlp
     image: dimdiden/jenkins-slave:jdk11
     tty: true
