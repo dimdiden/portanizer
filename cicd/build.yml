@@ -1,0 +1,18 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    label: kube-slave-kubectl
+spec:
+  nodeSelector:
+    node-role.kubernetes.io/master: ""
+  containers:
+  - name: jnlp
+    image: dimdiden/jenkins-slave:jdk11
+    tty: true
+    workingDir: /home/jenkins/agent
+  - name: kubectl
+    image: dimdiden/kubectl-arm:latest
+    command: ['cat']
+    tty: true
