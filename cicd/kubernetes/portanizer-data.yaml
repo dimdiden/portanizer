@@ -1,0 +1,104 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: portanizer-data
+  labels:
+    app: portanizer-data
+  namespace: internal-apps
+spec:
+  ports:
+    - port: 5432
+  selector:
+    app: portanizer-data
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: portanizer-data
+  namespace: internal-apps
+spec:
+  selector:
+    matchLabels:
+      app: portanizer-data
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: portanizer-data
+    spec:
+      containers:
+        - name: portanizer-data
+          image: postgres:9.4-alpine
+          envFrom:
+            - secretRef:
+                name: portanizer-data-secret
+          ports:
+            - name: postgres-port
+              containerPort: 5432
+          volumeMounts:
+            - name: postgresql-data
+              mountPath: /var/lib/postgresql/data/
+
+      volumes:
+        - name: postgresql-data
+          persistentVolumeClaim:
+            claimName: postgresql-data-pv-claim
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgresql-data-pv-claim
+  namespace: internal-apps
+spec:
+  dataSource:
+    name: postgresql-data-pv
+    kind: PersistentVolume
+  # storageClassName: local-storage
+  storageClassName: manual
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 20Gi
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: postgresql-data-pv
+  namespace: internal-apps
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 40Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: kubemaster
+    path: /srv/nfs-storage/kube/volumes/portanizer-data
+
+# ---
+# apiVersion: v1
+# kind: PersistentVolume
+# metadata:
+#   name: postgresql-data-pv
+# spec:
+#   capacity:
+#     storage: 20Gi
+#   accessModes:
+#   - ReadWriteOnce
+#   persistentVolumeReclaimPolicy: Retain
+#   storageClassName: local-storage
+#   local:
+#     path: /home/ded/Data/kube/volumes/portanizer-data
+#   nodeAffinity:
+#     required:
+#       nodeSelectorTerms:
+#       - matchExpressions:
+#         - key: kubernetes.io/hostname
+#           operator: In
+#           values:
+#           - dimdiden.ml
+

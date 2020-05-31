@@ -1,0 +1,38 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: internal-portanizer-ingress-route
+  namespace: internal-apps
+  annotations:
+    kubernetes.io/ingress.class: internal-traefik
+spec:
+  entryPoints:
+    - web
+  routes:
+  - match: Host(`portanizer.internal.dimdiden.ml`)
+    kind: Rule
+    services:
+    - name: portanizer
+      namespace: internal-apps
+      port: 9000
+
+---
+# apiVersion: traefik.containo.us/v1alpha1
+# kind: IngressRoute
+# metadata:
+#   name: internal-portanizer-ingress-route
+#   namespace: default
+#   annotations:
+#     kubernetes.io/ingress.class: external-traefik
+# spec:
+#   entryPoints:
+#     - websecure
+#   routes:
+#   - match: Host(`portanizer.dimdiden.ml`)
+#     kind: Rule
+#     services:
+#     - name: portanizer
+#       port: 9000
+#   tls:
+#     certResolver: default
+

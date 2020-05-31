@@ -19,9 +19,8 @@ pipeline {
     }
 
     environment {
-        REGISTRY = credentials('portanizer-registry')
+        REGISTRY = "dimdiden/kubectl-arm"
         DOCKER_HUB_CREDS = 'docker-hub-connector'
-        VERSION = "${env.BRANCH_NAME}-${env.BUILD_NUMBER}"
     }
 
     stages {
@@ -31,33 +30,18 @@ pipeline {
             }
         }
         stage('Build-Push') {
-            when {
-                anyOf {
-                    branch 'master'
-                }
-            }
             steps {
                 container('docker') {
                     script {
-                        def dockerImage = docker.build "${env.REGISTRY}:${VERSION}"
+                        dir('cicd') {
+                            def dockerImage = docker.build "${env.REGISTRY}"
 
-                        docker.withRegistry('', env.DOCKER_HUB_CREDS) {
-                            dockerImage.push()
+                            docker.withRegistry('', env.DOCKER_HUB_CREDS) {
+                                dockerImage.push()
+                            }
                         }
                     }
                 }
-            }
-        }
-        stage('Deploy') {
-            when {
-                anyOf {
-                    branch 'master'
-                }
-            }
-            steps {
-                build job: 'portanizer/portanizer-deploy', wait: true, parameters: [
-                    string(name: 'VERSION', value: VERSION)
-                ]
             }
         }
     }
