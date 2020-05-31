@@ -49,6 +49,11 @@ pipeline {
             }
         }
         stage('Deploy') {
+            when {
+                anyOf {
+                    branch 'master'
+                }
+            }
             steps {
                 build job: 'portanizer/portanizer-deploy', wait: true, parameters: [
                     string(name: 'VERSION', value: VERSION)
