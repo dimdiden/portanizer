@@ -3,10 +3,10 @@
 pipeline {
     agent {
         kubernetes {
-            label 'kube-slave-python'
-            defaultContainer 'python'
+            label 'kube-slave-docker'
+            defaultContainer 'jnlp'
             slaveConnectTimeout 200
-            yamlFile 'build.yml'
+            yamlFile 'cicd/pod-docker.yml'
         }
     }
 
@@ -21,6 +21,7 @@ pipeline {
     environment {
         REGISTRY = credentials('portanizer-registry')
         DOCKER_HUB_CREDS = 'docker-hub-connector'
+        VERSION = "${env.BRANCH_NAME}-${env.BUILD_NUMBER}"
     }
 
     stages {
@@ -33,19 +34,25 @@ pipeline {
             when {
                 anyOf {
                     branch 'master'
-                    branch 'cicd-*'
                 }
             }
             steps {
                 container('docker') {
                     script {
-                        def dockerImage = docker.build "${env.REGISTRY}:${env.BRANCH_NAME}-${env.BUILD_NUMBER}"
+                        def dockerImage = docker.build "${env.REGISTRY}:${VERSION}"
 
                         docker.withRegistry('', env.DOCKER_HUB_CREDS) {
                             dockerImage.push()
                         }
                     }
                 }
+            }
+        }
+        stage('Deploy') {
+            steps {
+                build job: 'portanizer/portanizer-deploy', wait: true, parameters: [
+                    string(name: 'VERSION', value: VERSION)
+                ]
             }
         }
     }
