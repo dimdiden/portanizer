@@ -19,7 +19,7 @@ pipeline {
     }
 
     environment {
-        REGISTRY = "dimdiden/kubelet-arm"
+        REGISTRY = "dimdiden/kubectl-arm"
         DOCKER_HUB_CREDS = 'docker-hub-connector'
     }
 
