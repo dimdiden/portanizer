@@ -30,6 +30,12 @@ pipeline {
             }
         }
         stage('Build-Push') {
+            when {
+                anyOf {
+                    branch 'master'
+                    branch 'cicd-*'
+                }
+            }
             steps {
                 container('docker') {
                     script {
