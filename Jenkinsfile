@@ -19,7 +19,7 @@ pipeline {
     }
 
     environment {
-        REGISTRY = credentials('portanizer-registry')
+        REGISTRY = "dimdiden/portanizer-arm"
         DOCKER_HUB_CREDS = 'docker-hub-connector'
         VERSION = "${env.BRANCH_NAME}-${env.BUILD_NUMBER}"
     }

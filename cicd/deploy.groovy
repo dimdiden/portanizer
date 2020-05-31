@@ -37,7 +37,7 @@ pipeline {
                 container('kubectl') {
                     script {
                         sh "ls -la"
-                        sh "sed -i -e 's/%_PORTANIZER_IMAGE_%/${env.REGISTRY}:${params.VERSION}/g' cicd/kubernetes/portanizer.yaml"
+                        sh "sed -i -e 's|%_PORTANIZER_IMAGE_%|${env.REGISTRY}:${params.VERSION}|g' cicd/kubernetes/portanizer.yaml"
                         sh "kubectl apply -f cicd/kubernetes"
                     }
                 }
