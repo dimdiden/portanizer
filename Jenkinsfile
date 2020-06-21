@@ -43,6 +43,7 @@ pipeline {
 
                         docker.withRegistry('', env.DOCKER_HUB_CREDS) {
                             dockerImage.push()
+                            dockerImage.push('latest')
                         }
                     }
                 }
