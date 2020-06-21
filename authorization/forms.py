@@ -53,7 +53,7 @@ class UserRegisterForm(forms.ModelForm):
             'password2',
             'email',
         ]
-# https://stackoverflow.com/questions/34609830/django-modelform-how-to-add-a-confirm-password-field
+    # https://stackoverflow.com/questions/34609830/django-modelform-how-to-add-a-confirm-password-field
     def clean(self, *args, **kwargs):
         password = self.cleaned_data.get('password')
         password2 = self.cleaned_data.get('password2')
