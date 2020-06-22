@@ -2,7 +2,7 @@ appdirs==1.4.3
 astroid==2.3.3
 bump2version==1.0.0
 dj-database-url==0.4.2
-Django==1.11.28
+Django==1.11.29
 django-extensions==1.7.9
 django-rest-framework==0.1.0
 django-widget-tweaks==1.4.1
