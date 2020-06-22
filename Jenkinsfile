@@ -48,9 +48,8 @@ pipeline {
                             dockerImage.push()
                             dockerImage.push('latest')
                         }
-                        gitHash = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
                         
-                        currentBuild.displayName = "${version}-${gitHash}-#${env.BUILD_NUMBER}"
+                        currentBuild.displayName = "${version}-#${env.BUILD_NUMBER}"
                     }
                 }
             }
