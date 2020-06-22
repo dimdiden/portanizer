@@ -38,18 +38,18 @@ pipeline {
             steps {
                 container('docker') {
                     script {
-                        version = sh(
+                        env.version = sh(
                             script: 'grep current_version .bumpversion.cfg | sed -e s/"^.*= "//',
                             returnStdout: true
                         ).trim()
-                        def dockerImage = docker.build "${env.REGISTRY}:${version}"
+                        def dockerImage = docker.build "${env.REGISTRY}:${env.version}"
 
                         docker.withRegistry('', env.DOCKER_HUB_CREDS) {
                             dockerImage.push()
                             dockerImage.push('latest')
                         }
                         
-                        currentBuild.displayName = "${version}-#${env.BUILD_NUMBER}"
+                        currentBuild.displayName = "${env.version}-#${env.BUILD_NUMBER}"
                     }
                 }
             }
@@ -62,7 +62,7 @@ pipeline {
             }
             steps {
                 build job: 'portanizer/portanizer-deploy', wait: true, parameters: [
-                    string(name: 'VERSION', value: VERSION)
+                    string(name: env.version, value: VERSION)
                 ]
             }
         }
