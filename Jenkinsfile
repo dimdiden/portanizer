@@ -62,7 +62,7 @@ pipeline {
             }
             steps {
                 build job: 'portanizer/portanizer-deploy', wait: true, parameters: [
-                    string(name: env.version, value: VERSION)
+                    string(name: 'VERSION', value: env.version)
                 ]
             }
         }
