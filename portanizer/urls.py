@@ -7,6 +7,6 @@ urlpatterns = [
     url(r'^$',
         RedirectView.as_view(pattern_name='posts:index')),
     url(r'^authorization/',
-        include('authorization.urls', namespace='authorization')),
-    url(r'^posts/', include('posts.urls', namespace='posts')),
+        include(('authorization.urls', 'authorization'), namespace='authorization')),
+    url(r'^posts/', include(('posts.urls', 'posts'), namespace='posts')),
 ]
