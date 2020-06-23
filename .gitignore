@@ -1,5 +1,5 @@
 portanizer/settings/local.py
-venv
+venv*
 *.pyc
 .env
 db.sqlite3

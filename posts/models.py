@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 
 class Post(models.Model):
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=50)
     body = models.TextField()
     tag = models.ManyToManyField('Tag', blank=True)
@@ -17,7 +17,7 @@ class Post(models.Model):
 
 
 class Tag(models.Model):
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
 
     def __str__(self):
